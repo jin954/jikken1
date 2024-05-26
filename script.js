@@ -6,7 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const countdownElement = document.getElementById('countdown');
     const countdownDisplay = document.getElementById('countdownDisplay');
     const switchElements = document.querySelectorAll('.switch input');
+    const settingsPanels = document.querySelectorAll('.settings-panel');
 
+    const defaultBgColor = '#1a1a2e';
+    const defaultTextColor = 'white';
+    
     // Clock
     let showSeconds = true;
     let is24Hour = true;
@@ -29,201 +33,198 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const timeString = `${String(hours).padStart(2, '0')}:${minutes}${showSeconds ? `:${seconds}` : ''} ${period}`;
-        const dateString = `${year}年${month}月${date}日 (${day})`;
+        const dateString = `${year}年${month}月${date}日 ${day}曜日`;
 
-        dateElement.innerText = dateString;
-        timeElement.innerText = timeString;
+        timeElement.textContent = timeString;
+        dateElement.textContent = dateString;
     }
 
     setInterval(updateClock, 1000);
+    updateClock();
 
-    // Pomodoro Timer
-    let pomodoroTime = 25 * 60;
-    let shortBreakTime = 5 * 60;
-    let longBreakTime = 15 * 60;
-    let remainingTime = pomodoroTime;
-    let pomodoroInterval;
-    let currentMode = 'pomodoro';
-
-    function updatePomodoro() {
-        const minutes = String(Math.floor(remainingTime / 60)).padStart(2, '0');
-        const seconds = String(remainingTime % 60).padStart(2, '0');
-        document.getElementById('timer').innerText = `${minutes}:${seconds}`;
-    }
-
-    function startPomodoro() {
-        clearInterval(pomodoroInterval);
-        pomodoroInterval = setInterval(() => {
-            remainingTime -= 1;
-            if (remainingTime <= 0) {
-                clearInterval(pomodoroInterval);
-            }
-            updatePomodoro();
-        }, 1000);
-    }
-
-    document.getElementById('pomodoroMode').addEventListener('click', () => {
-        currentMode = 'pomodoro';
-        remainingTime = pomodoroTime;
-        updatePomodoro();
-    });
-
-    document.getElementById('shortBreakMode').addEventListener('click', () => {
-        currentMode = 'shortBreak';
-        remainingTime = shortBreakTime;
-        updatePomodoro();
-    });
-
-    document.getElementById('longBreakMode').addEventListener('click', () => {
-        currentMode = 'longBreak';
-        remainingTime = longBreakTime;
-        updatePomodoro();
-    });
-
-    document.getElementById('startTimer').addEventListener('click', startPomodoro);
-
-    document.getElementById('resetTimer').addEventListener('click', () => {
-        clearInterval(pomodoroInterval);
-        if (currentMode === 'pomodoro') {
-            remainingTime = pomodoroTime;
-        } else if (currentMode === 'shortBreak') {
-            remainingTime = shortBreakTime;
-        } else if (currentMode === 'longBreak') {
-            remainingTime = longBreakTime;
-        }
-        updatePomodoro();
-    });
-
-    // Countdown Timer
-    let countdownInterval;
-    let countdownTargetDate;
-
-    function updateCountdown() {
-        const now = new Date();
-        const distance = countdownTargetDate - now;
-
-        if (distance < 0) {
-            clearInterval(countdownInterval);
-            countdownDisplay.innerText = "00日00時間00分00秒";
-            return;
-        }
-
-        const days = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
-        const hours = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-        const minutes = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-        const seconds = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
-
-        countdownDisplay.innerText = `${days}日${hours}時間${minutes}分${seconds}秒`;
-    }
-
-    function startCountdown() {
-        clearInterval(countdownInterval);
-        countdownInterval = setInterval(updateCountdown, 1000);
-    }
-
-    document.getElementById('startCountdown').addEventListener('click', () => {
-        const year = parseInt(document.getElementById('countdownYear').value);
-        const month = parseInt(document.getElementById('countdownMonth').value) - 1; // Month is 0-based
-        const day = parseInt(document.getElementById('countdownDay').value);
-        const hour = parseInt(document.getElementById('countdownHour').value);
-        const minute = parseInt(document.getElementById('countdownMinute').value);
-        const second = parseInt(document.getElementById('countdownSecond').value);
-
-        countdownTargetDate = new Date(year, month, day, hour, minute, second);
-        startCountdown();
-    });
-
-    document.getElementById('resetCountdown').addEventListener('click', () => {
-        clearInterval(countdownInterval);
-        countdownDisplay.innerText = "00日00時間00分00秒";
-    });
-
-    // Switch between modes
-    switchElements.forEach(switchElement => {
-        switchElement.addEventListener('change', () => {
-            const mode = switchElement.value;
+    // Mode switch
+    switchElements.forEach(el => {
+        el.addEventListener('change', (e) => {
             clockElement.classList.remove('active');
             pomodoroElement.classList.remove('active');
             countdownElement.classList.remove('active');
-            document.getElementById(mode).classList.add('active');
+            const mode = e.target.value;
+            if (mode === 'clock') {
+                clockElement.classList.add('active');
+            } else if (mode === 'pomodoro') {
+                pomodoroElement.classList.add('active');
+            } else if (mode === 'countdown') {
+                countdownElement.classList.add('active');
+            }
         });
     });
 
-    // Settings
-    function openSettingsPanel(panelId) {
+    // Pomodoro Timer
+    const pomodoroMinutesInput = document.getElementById('pomodoroMinutes');
+    const shortBreakMinutesInput = document.getElementById('shortBreakMinutes');
+    const longBreakMinutesInput = document.getElementById('longBreakMinutes');
+
+    let pomodoroDuration = 25 * 60;
+    let shortBreakDuration = 5 * 60;
+    let longBreakDuration = 15 * 60;
+    let timerDuration = pomodoroDuration;
+    let timerInterval;
+
+    function startTimer() {
+        clearInterval(timerInterval);
+        const startTime = Date.now();
+        const endTime = startTime + timerDuration * 1000;
+        timerInterval = setInterval(() => {
+            const now = Date.now();
+            const remainingTime = Math.max(0, Math.floor((endTime - now) / 1000));
+            const minutes = String(Math.floor(remainingTime / 60)).padStart(2, '0');
+            const seconds = String(remainingTime % 60).padStart(2, '0');
+            document.getElementById('timer').textContent = `${minutes}:${seconds}`;
+            if (remainingTime === 0) {
+                clearInterval(timerInterval);
+            }
+        }, 1000);
+    }
+
+    function resetTimer() {
+        clearInterval(timerInterval);
+        timerDuration = pomodoroDuration;
+        document.getElementById('timer').textContent = '25:00';
+    }
+
+    document.getElementById('startTimer').addEventListener('click', startTimer);
+    document.getElementById('resetTimer').addEventListener('click', resetTimer);
+    document.getElementById('pomodoroMode').addEventListener('click', () => {
+        timerDuration = pomodoroDuration;
+        resetTimer();
+    });
+    document.getElementById('shortBreakMode').addEventListener('click', () => {
+        timerDuration = shortBreakDuration;
+        resetTimer();
+    });
+    document.getElementById('longBreakMode').addEventListener('click', () => {
+        timerDuration = longBreakDuration;
+        resetTimer();
+    });
+
+    // Countdown Timer
+    let countdownEndTime;
+
+    function updateCountdown() {
+        const now = Date.now();
+        const remainingTime = Math.max(0, countdownEndTime - now);
+        const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+        countdownDisplay.textContent = `${days}日${hours}時間${minutes}分${seconds}秒`;
+        if (remainingTime === 0) {
+            clearInterval(timerInterval);
+        }
+    }
+
+    document.getElementById('startCountdown').addEventListener('click', () => {
+        const year = document.getElementById('countdownYear').value;
+        const month = document.getElementById('countdownMonth').value - 1;
+        const day = document.getElementById('countdownDay').value;
+        const hour = document.getElementById('countdownHour').value;
+        const minute = document.getElementById('countdownMinute').value;
+        const second = document.getElementById('countdownSecond').value;
+        countdownEndTime = new Date(year, month, day, hour, minute, second).getTime();
+        clearInterval(timerInterval);
+        timerInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+    });
+
+    document.getElementById('resetCountdown').addEventListener('click', () => {
+        clearInterval(timerInterval);
+        countdownDisplay.textContent = '00日00時間00分00秒';
+    });
+
+    // Settings Panels
+    function showPanel(panelId) {
+        settingsPanels.forEach(panel => panel.style.display = 'none');
         document.getElementById(panelId).style.display = 'block';
     }
 
-    function closeSettingsPanel(panelId) {
-        document.getElementById(panelId).style.display = 'none';
+    function hidePanels() {
+        settingsPanels.forEach(panel => panel.style.display = 'none');
     }
 
-    // Clock settings
-    document.getElementById('clock-settings').addEventListener('click', () => {
-        openSettingsPanel('clock-settings-panel');
+    document.getElementById('clock-settings').addEventListener('click', () => showPanel('clock-settings-panel'));
+    document.getElementById('pomodoro-settings').addEventListener('click', () => showPanel('pomodoro-settings-panel'));
+    document.getElementById('countdown-settings').addEventListener('click', () => showPanel('countdown-settings-panel'));
+
+    document.getElementById('close-clock-settings').addEventListener('click', hidePanels);
+    document.getElementById('close-pomodoro-settings').addEventListener('click', hidePanels);
+    document.getElementById('close-countdown-settings').addEventListener('click', hidePanels);
+
+    // Time format settings
+    document.getElementById('time-format').addEventListener('change', (e) => {
+        is24Hour = e.target.value === '24h';
     });
 
-    document.getElementById('close-clock-settings').addEventListener('click', () => {
-        closeSettingsPanel('clock-settings-panel');
-        is24Hour = document.getElementById('time-format').value === '24h';
-        showSeconds = document.getElementById('show-seconds').checked;
-        const clockBgColor = document.getElementById('clock-bg-color').value;
-        const clockTextColor = document.getElementById('clock-text-color').value;
-        clockElement.style.backgroundColor = clockBgColor;
-        clockElement.style.color = clockTextColor;
-        const clockBgImage = document.getElementById('clock-bg-image').files[0];
-        if (clockBgImage) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                clockElement.style.backgroundImage = `url(${e.target.result})`;
-            }
-            reader.readAsDataURL(clockBgImage);
-        }
+    document.getElementById('show-seconds').addEventListener('change', (e) => {
+        showSeconds = e.target.checked;
     });
 
-    // Pomodoro settings
-    document.getElementById('pomodoro-settings').addEventListener('click', () => {
-        openSettingsPanel('pomodoro-settings-panel');
+    // Background and text color settings
+    document.getElementById('bg-color').addEventListener('change', (e) => {
+        document.body.style.backgroundColor = e.target.value;
     });
 
-    document.getElementById('close-pomodoro-settings').addEventListener('click', () => {
-        closeSettingsPanel('pomodoro-settings-panel');
-        pomodoroTime = parseInt(document.getElementById('pomodoroMinutes').value) * 60;
-        shortBreakTime = parseInt(document.getElementById('shortBreakMinutes').value) * 60;
-        longBreakTime = parseInt(document.getElementById('longBreakMinutes').value) * 60;
-        const pomodoroBgColor = document.getElementById('pomodoro-bg-color').value;
-        const pomodoroTextColor = document.getElementById('pomodoro-text-color').value;
-        pomodoroElement.style.backgroundColor = pomodoroBgColor;
-        pomodoroElement.style.color = pomodoroTextColor;
-        const pomodoroBgImage = document.getElementById('pomodoro-bg-image').files[0];
-        if (pomodoroBgImage) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                pomodoroElement.style.backgroundImage = `url(${e.target.result})`;
-            }
-            reader.readAsDataURL(pomodoroBgImage);
-        }
-        updatePomodoro();
+    document.getElementById('bg-color-pomodoro').addEventListener('change', (e) => {
+        document.body.style.backgroundColor = e.target.value;
     });
 
-    // Countdown settings
-    document.getElementById('countdown-settings').addEventListener('click', () => {
-        openSettingsPanel('countdown-settings-panel');
+    document.getElementById('bg-color-countdown').addEventListener('change', (e) => {
+        document.body.style.backgroundColor = e.target.value;
     });
 
-    document.getElementById('close-countdown-settings').addEventListener('click', () => {
-        closeSettingsPanel('countdown-settings-panel');
-        const countdownBgColor = document.getElementById('countdown-bg-color').value;
-        const countdownTextColor = document.getElementById('countdown-text-color').value;
-        countdownElement.style.backgroundColor = countdownBgColor;
-        countdownElement.style.color = countdownTextColor;
-        const countdownBgImage = document.getElementById('countdown-bg-image').files[0];
-        if (countdownBgImage) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                countdownElement.style.backgroundImage = `url(${e.target.result})`;
-            }
-            reader.readAsDataURL(countdownBgImage);
-        }
+    function createColorOptions(containerId, inputId) {
+        const colors = ['#ffffff', '#000000', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        colors.forEach(color => {
+            const colorDiv = document.createElement('div');
+            colorDiv.style.backgroundColor = color;
+            colorDiv.addEventListener('click', () => {
+                document.getElementById(inputId).value = color;
+                document.getElementById(inputId).dispatchEvent(new Event('input'));
+            });
+            container.appendChild(colorDiv);
+        });
+        const customColorInput = document.createElement('input');
+        customColorInput.type = 'color';
+        customColorInput.addEventListener('input', (e) => {
+            document.getElementById(inputId).value = e.target.value;
+        });
+        container.appendChild(customColorInput);
+    }
+
+    createColorOptions('clock-text-color-container', 'clock-text-color');
+    createColorOptions('pomodoro-text-color-container', 'pomodoro-text-color');
+    createColorOptions('countdown-text-color-container', 'countdown-text-color');
+
+    function applyTextColor(inputId, targetElement) {
+        document.getElementById(inputId).addEventListener('input', (e) => {
+            targetElement.style.color = e.target.value;
+        });
+    }
+
+    applyTextColor('clock-text-color', document.getElementById('time'));
+    applyTextColor('clock-text-color', document.getElementById('date'));
+    applyTextColor('pomodoro-text-color', document.getElementById('timer'));
+    applyTextColor('countdown-text-color', document.getElementById('countdownDisplay'));
+
+    // Apply default colors on close settings
+    document.querySelectorAll('.settings-panel button').forEach(button => {
+        button.addEventListener('click', () => {
+            document.body.style.backgroundColor = defaultBgColor;
+            document.getElementById('time').style.color = defaultTextColor;
+            document.getElementById('date').style.color = defaultTextColor;
+            document.getElementById('timer').style.color = defaultTextColor;
+            document.getElementById('countdownDisplay').style.color = defaultTextColor;
+        });
     });
 });
