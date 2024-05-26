@@ -117,47 +117,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Countdown Timer
     let countdownEndTime;
-    const countdownYearInput = document.getElementById('countdownYear');
-    const countdownMonthInput = document.getElementById('countdownMonth');
-    const countdownDayInput = document.getElementById('countdownDay');
-    const countdownHourInput = document.getElementById('countdownHour');
-    const countdownMinuteInput = document.getElementById('countdownMinute');
-    const countdownSecondInput = document.getElementById('countdownSecond');
-
-    function startCountdown() {
-        clearInterval(timerInterval);
-        const targetDate = new Date(
-            countdownYearInput.value,
-            countdownMonthInput.value - 1,
-            countdownDayInput.value,
-            countdownHourInput.value,
-            countdownMinuteInput.value,
-            countdownSecondInput.value
-        );
-        countdownEndTime = targetDate.getTime();
-        timerInterval = setInterval(updateCountdown, 1000);
-    }
-
-    function resetCountdown() {
-        clearInterval(timerInterval);
-        countdownDisplay.textContent = '00日00時間00分00秒';
-    }
 
     function updateCountdown() {
         const now = Date.now();
         const remainingTime = Math.max(0, countdownEndTime - now);
-        const seconds = Math.floor((remainingTime / 1000) % 60);
-        const minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
-        const hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
         const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
         countdownDisplay.textContent = `${days}日${hours}時間${minutes}分${seconds}秒`;
         if (remainingTime === 0) {
             clearInterval(timerInterval);
         }
     }
 
-    document.getElementById('startCountdown').addEventListener('click', startCountdown);
-    document.getElementById('resetCountdown').addEventListener('click', resetCountdown);
+    document.getElementById('startCountdown').addEventListener('click', () => {
+        const year = document.getElementById('countdownYear').value;
+        const month = document.getElementById('countdownMonth').value - 1;
+        const day = document.getElementById('countdownDay').value;
+        const hour = document.getElementById('countdownHour').value;
+        const minute = document.getElementById('countdownMinute').value;
+        const second = document.getElementById('countdownSecond').value;
+        countdownEndTime = new Date(year, month, day, hour, minute, second).getTime();
+        clearInterval(timerInterval);
+        timerInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+    });
+
+    document.getElementById('resetCountdown').addEventListener('click', () => {
+        clearInterval(timerInterval);
+        countdownDisplay.textContent = '00日00時間00分00秒';
+    });
 
     // Settings Panels
     function showPanel(panelId) {
