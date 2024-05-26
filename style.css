@@ -1,139 +1,70 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    background-color: #1c1c2e;
+    color: white;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     height: 100vh;
     margin: 0;
-    background: #1a1a2e;
-    color: white;
 }
 
-#date {
-    font-size: 0.8em;
-}
-
-#time {
-    font-size: 2em;
-    letter-spacing: -0.03em;
-}
-
-#clock, #pomodoro, #countdown {
+#timer-app {
     text-align: center;
-    display: none;
 }
 
-#clock.active, #pomodoro.active, #countdown.active {
-    display: block;
-}
-
-.switch {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-}
-
-.switch label {
-    margin-right: 10px;
-    padding: 5px 10px;
-    border: 2px solid black;
-    border-radius: 25px;
-    background: white;
-    color: black;
-    cursor: pointer;
-}
-
-.switch input[type="radio"] {
-    display: none;
-}
-
-.switch input[type="radio"]:checked + label {
-    background: black;
-    color: white;
-}
-
-#pomodoro, #countdown {
-    transform: scale(0.8);
-}
-
-#pomodoro .buttons, #countdown .buttons {
-    display: flex;
-    justify-content: center;
+.mode-buttons {
     margin-bottom: 20px;
 }
 
-#pomodoro .buttons button, #countdown .buttons button {
+.mode-button {
+    background-color: #ffffff;
+    border: 2px solid #000000;
+    color: #000000;
+    border-radius: 5px;
+    padding: 10px 20px;
     margin: 0 5px;
-    padding: 5px 15px;
-    border: 2px solid black;
-    border-radius: 25px;
-    background: white;
-    color: black;
-    cursor: pointer;
-    font-size: 0.8em;
+    font-size: 16px;
 }
 
-#timer, #countdownDisplay {
-    font-size: 2em;
-    margin: 10px 0;
+.timer-display {
+    font-size: 80px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 5px #000000;
 }
 
-.pomodoro-controls {
+.control-buttons {
     display: flex;
     justify-content: center;
-    margin-bottom: 10px;
+    gap: 10px;
 }
 
-.pomodoro-controls button {
-    margin: 0 5px;
-    padding: 5px 10px;
-    border: 2px solid black;
-    border-radius: 25px;
-    background: white;
-    color: black;
-    cursor: pointer;
-    font-size: 1em;
+.control-button {
+    background-color: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.settings-button {
-    font-size: 1.5em;
-    padding: 5px;
-    border: 2px solid black;
-    border-radius: 25px;
-    background: white;
-    color: black;
-    cursor: pointer;
+.control-button img {
+    height: 20px;
+    width: 20px;
 }
 
-.settings-panel {
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%, -10%);
-    background: rgba(26, 26, 46, 0.9);
-    padding: 20px;
-    border-radius: 10px;
-    color: white;
+#start-button {
+    width: auto;
 }
 
-.settings-panel label {
-    display: block;
-    margin: 10px 0;
+#reset-button, #settings-button {
+    width: 50px;
+    height: 50px;
 }
 
-.settings-panel select {
-    margin-left: 10px;
+#reset-button img, #settings-button img {
+    filter: invert(1);
 }
-
-.settings-panel button {
-    margin-top: 10px;
-    padding: 5px 10px;
-    border: 2px solid black;
-    border-radius: 25px;
-    background: white;
-    color: black;
-    cursor: pointer;
-    font-size: 1em;
-}
-
