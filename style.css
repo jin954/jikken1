@@ -86,8 +86,8 @@ body {
 
 /* CDの「日」、「時間」、「分」、「秒」を小さくする */
 #countdownDisplay span {
-    font-size: 0.5em;
-    margin-left: 5px;
+    font-size: 0.5em; /* 数字の半分の大きさに設定 */
+    vertical-align: middle;
 }
 
 .pomodoro-controls {
