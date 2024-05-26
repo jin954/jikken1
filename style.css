@@ -84,11 +84,12 @@ body {
     font-size: 1em; /* ボタンテキストのフォントサイズを小さく */
 }
 
-#open-settings, #open-countdown-settings {
-    font-size: 1.5em; /* 歯車マークの大きさはそのまま */
+.settings-button {
+    font-size: 1.5em; /* 歯車マークの大きさ */
     background: none;
     border: none;
     cursor: pointer;
+    color: white; /* 見えるように白に設定 */
 }
 
 #settings, #countdown-settings {
