@@ -76,7 +76,7 @@ body {
     background: white;
     color: black;
     cursor: pointer;
-    font-size: 0.5em; /* 歯車アイコンのサイズをポモドーロやカウントダウンの歯車アイコンと同じに設定 */
+    font-size: 0.3em; /* 時計の歯車アイコンのサイズ設定 */
 }
 
 #timer, #countdownDisplay {
