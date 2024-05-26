@@ -1,0 +1,106 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background: #1a1a2e;
+    color: white;
+}
+
+#date {
+    font-size: 0.5em; /* 日付のフォントサイズをほんの少し小さく */
+}
+
+#time {
+    font-size: 2em; /* 時間のフォントサイズを少し小さく */
+    letter-spacing: -0.03em; /* 数字とコロンの間隔をほんの少し広く */
+}
+
+#clock, #pomodoro, #countdown {
+    text-align: center;
+    display: none;
+}
+
+#clock.active, #pomodoro.active, #countdown.active {
+    display: block;
+}
+
+.switch {
+    margin-top: 20px;
+}
+
+.switch label {
+    margin-right: 10px;
+}
+
+#pomodoro, #countdown {
+    transform: scale(0.8); /* 全体を縮小 */
+}
+
+#pomodoro .buttons, #countdown .buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#pomodoro .buttons button, #countdown .buttons button {
+    margin: 0 5px;
+    padding: 5px 15px; /* ボタンを小さく */
+    border: none;
+    border-radius: 25px;
+    background: white;
+    color: #1a1a2e;
+    cursor: pointer;
+    font-size: 0.8em; /* ボタンテキストのフォントサイズを小さく */
+}
+
+#pomodoro .buttons button.active, #countdown .buttons button.active {
+    background: #e94560;
+    color: white;
+}
+
+#timer, #countdownDisplay {
+    font-size: 2em; /* タイマーのフォントサイズを小さく */
+    margin: 10px 0; /* 上下の余白を小さく */
+}
+
+.pomodoro-controls {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.pomodoro-controls button {
+    margin: 0 5px;
+    padding: 5px 10px; /* コントロールボタンを小さく */
+    border: none;
+    border-radius: 25px;
+    background: white;
+    color: #1a1a2e;
+    cursor: pointer;
+    font-size: 1em; /* ボタンテキストのフォントサイズを小さく */
+}
+
+#open-settings, #open-countdown-settings {
+    font-size: 1.5em; /* 歯車マークの大きさはそのまま */
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#settings, #countdown-settings {
+    margin-top: 10px;
+}
+
+#settings label, #countdown-settings label {
+    display: block;
+    margin: 10px 0;
+    color: white;
+}
+
+#settings input, #countdown-settings input {
+    width: 50px;
+}
