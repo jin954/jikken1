@@ -70,18 +70,18 @@ body {
 
 #pomodoro .buttons button, #countdown .buttons button, .settings-button {
     margin: 0 5px;
-    padding: 5px;
+    padding: 5px 15px;
     border: 2px solid black;
     border-radius: 25px;
     background: white;
     color: black;
     cursor: pointer;
-    font-size: 1.5em; /* 歯車アイコンのサイズをポモドーロやカウントダウンの歯車アイコンと同じに設定 */
+    font-size: 0.8em; /* 歯車アイコンのサイズをポモドーロやカウントダウンの歯車アイコンと同じに設定 */
 }
 
 #timer, #countdownDisplay {
-    font-size: 2em;
-    margin: 10px 0;
+    font-size: 3.5em;
+    margin: 15px 0;
 }
 
 .pomodoro-controls {
