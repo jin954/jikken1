@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock and Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="clock" class="active">
+        <div id="date"></div>
+        <div id="time"></div>
+    </div>
+
+    <div id="pomodoro">
+        <div class="buttons">
+            <button id="pomodoroMode">Pomodoro</button>
+            <button id="shortBreakMode">Short Break</button>
+            <button id="longBreakMode">Long Break</button>
+        </div>
+        <div id="timer">25:00</div>
+        <div class="pomodoro-controls">
+            <button id="startTimer">Start</button>
+            <button id="resetTimer">&#8635;</button>
+            <button id="open-settings">&#9881;</button>
+        </div>
+    </div>
+
+    <div id="countdown">
+        <div id="countdownDisplay"></div>
+        <div class="pomodoro-controls">
+            <button id="startCountdown">Start</button>
+            <button id="resetCountdown">&#8635;</button>
+            <button id="open-countdown-settings">&#9881;</button>
+        </div>
+    </div>
+
+    <div class="switch">
+        <label><input type="radio" name="mode" value="clock" checked> 時計</label>
+        <label><input type="radio" name="mode" value="pomodoro"> ポモドーロ</label>
+        <label><input type="radio" name="mode" value="countdown"> カウントダウン</label>
+    </div>
+
+    <div id="settings" style="display:none;">
+        <label>Pomodoro: <input type="number" id="pomodoroMinutes" value="25"> 分</label>
+        <label>Short Break: <input type="number" id="shortBreakMinutes" value="5"> 分</label>
+        <label>Long Break: <input type="number" id="longBreakMinutes" value="15"> 分</label>
+        <button id="close-settings">閉じる</button>
+    </div>
+
+    <div id="countdown-settings" style="display:none;">
+        <label>Year: <input type="number" id="countdownYear" value="2024"></label>
+        <label>Month: <input type="number" id="countdownMonth" value="12"></label>
+        <label>Day: <input type="number" id="countdownDay" value="31"></label>
+        <label>Hour: <input type="number" id="countdownHour" value="23"></label>
+        <label>Minute: <input type="number" id="countdownMinute" value="59"></label>
+        <label>Second: <input type="number" id="countdownSecond" value="59"></label>
+        <button id="close-countdown-settings">閉じる</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
