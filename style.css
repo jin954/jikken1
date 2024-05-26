@@ -20,7 +20,7 @@ body {
 }
 
 #timer {
-    font-size: 3em;
+    font-size: 3.5em;
     margin: 10px 0;
 }
 
@@ -76,7 +76,7 @@ body {
     background: white;
     color: black;
     cursor: pointer;
-    font-size: 0.3em; /* 時計の歯車アイコンのサイズ設定 */
+    font-size: 0.1em; /* 時計の歯車アイコンのサイズ設定 */
 }
 
 #timer, #countdownDisplay {
