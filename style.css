@@ -19,6 +19,11 @@ body {
     letter-spacing: -0.03em;
 }
 
+#timer {
+    font-size: 3em; /* ポモドーロモードのタイマーの数字を大きくする */
+    margin: 10px 0;
+}
+
 #clock, #pomodoro, #countdown {
     text-align: center;
     display: none;
