@@ -1,70 +1,58 @@
+/* style.css */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #1c1c2e;
-    color: white;
+    font-family: Arial, sans-serif;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     height: 100vh;
     margin: 0;
+    color: white;
 }
 
-#timer-app {
+#timer, #countdownDisplay {
+    font-size: 4em; /* 大きなフォントサイズに変更 */
+}
+
+/* クリック可能なボタンのデザインを変更 */
+.start-button, .reset-button, .settings-button {
+    margin: 10px;
+    padding: 10px 20px; /* より横長のデザインに変更 */
+    border: 2px solid black;
+    border-radius: 25px;
+    background: white;
+    color: black;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+/* 歯車アイコンをよりカッコイイものに変更 */
+.settings-button::after {
+    content: '\1F527'; /* 歯車の絵文字に変更 */
+}
+
+.settings-button {
+    font-size: 1.5em;
+}
+
+/* 全ての文字に黒縁を追加し、黒縁の幅を狭くする */
+#clock, #pomodoro, #countdown {
     text-align: center;
+    display: none;
+    border: 2px solid black;
+    padding: 20px;
+    border-radius: 10px;
 }
 
-.mode-buttons {
-    margin-bottom: 20px;
+/* ページ全体の背景色を変更 */
+body.clock {
+    background: #1a1a2e;
 }
 
-.mode-button {
-    background-color: #ffffff;
-    border: 2px solid #000000;
-    color: #000000;
-    border-radius: 5px;
-    padding: 10px 20px;
-    margin: 0 5px;
-    font-size: 16px;
+body.pomodoro {
+    background: #2e1a1a;
 }
 
-.timer-display {
-    font-size: 80px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 5px #000000;
-}
-
-.control-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.control-button {
-    background-color: #ffffff;
-    border: 2px solid #000000;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.control-button img {
-    height: 20px;
-    width: 20px;
-}
-
-#start-button {
-    width: auto;
-}
-
-#reset-button, #settings-button {
-    width: 50px;
-    height: 50px;
-}
-
-#reset-button img, #settings-button img {
-    filter: invert(1);
+body.countdown {
+    background: #1a2e1a;
 }
