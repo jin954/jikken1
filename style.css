@@ -68,7 +68,7 @@ body {
     margin-bottom: 20px;
 }
 
-#pomodoro .buttons button, #countdown .buttons button {
+#pomodoro .buttons button, #countdown .buttons button, .settings-button {
     margin: 0 5px;
     padding: 5px 15px;
     border: 2px solid black;
@@ -76,23 +76,12 @@ body {
     background: white;
     color: black;
     cursor: pointer;
-    font-size: 0.8em;
-}
-
-.settings-button {
-    margin: 0 5px;
-    padding: 5px 15px;
-    border: 2px solid black;
-    border-radius: 25px;
-    background: white;
-    color: black;
-    cursor: pointer;
-    font-size: 0.5em; /* 時計の歯車アイコンのサイズ */
+    font-size: 0.3em; /* 時計の歯車アイコンのサイズ設定 */
 }
 
 #timer, #countdownDisplay {
     font-size: 3.5em;
-    margin: 30px 0;
+    margin: 15px 0;
 }
 
 .pomodoro-controls {
