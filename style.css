@@ -1,4 +1,3 @@
-/* style.css */
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -7,17 +6,88 @@ body {
     justify-content: center;
     height: 100vh;
     margin: 0;
+    background: #1a1a2e;
     color: white;
 }
 
-#timer, #countdownDisplay {
-    font-size: 4em; /* 大きなフォントサイズに変更 */
+#date {
+    font-size: 0.8em;
 }
 
-/* クリック可能なボタンのデザインを変更 */
-.start-button, .reset-button, .settings-button {
-    margin: 10px;
-    padding: 10px 20px; /* より横長のデザインに変更 */
+#time {
+    font-size: 2em;
+    letter-spacing: -0.03em;
+}
+
+#clock, #pomodoro, #countdown {
+    text-align: center;
+    display: none;
+}
+
+#clock.active, #pomodoro.active, #countdown.active {
+    display: block;
+}
+
+.switch {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.switch label {
+    margin-right: 10px;
+    padding: 5px 10px;
+    border: 2px solid black;
+    border-radius: 25px;
+    background: white;
+    color: black;
+    cursor: pointer;
+}
+
+.switch input[type="radio"] {
+    display: none;
+}
+
+.switch input[type="radio"]:checked + label {
+    background: black;
+    color: white;
+}
+
+#pomodoro, #countdown {
+    transform: scale(0.8);
+}
+
+#pomodoro .buttons, #countdown .buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#pomodoro .buttons button, #countdown .buttons button {
+    margin: 0 5px;
+    padding: 5px 15px;
+    border: 2px solid black;
+    border-radius: 25px;
+    background: white;
+    color: black;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+#timer, #countdownDisplay {
+    font-size: 2em;
+    margin: 10px 0;
+}
+
+.pomodoro-controls {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.pomodoro-controls button {
+    margin: 0 5px;
+    padding: 5px 10px;
     border: 2px solid black;
     border-radius: 25px;
     background: white;
@@ -26,33 +96,43 @@ body {
     font-size: 1em;
 }
 
-/* 歯車アイコンをよりカッコイイものに変更 */
-.settings-button::after {
-    content: '\1F527'; /* 歯車の絵文字に変更 */
-}
-
 .settings-button {
     font-size: 1.5em;
+    padding: 5px;
+    border: 2px solid black;
+    border-radius: 25px;
+    background: white;
+    color: black;
+    cursor: pointer;
 }
 
-/* 全ての文字に黒縁を追加し、黒縁の幅を狭くする */
-#clock, #pomodoro, #countdown {
-    text-align: center;
-    display: none;
-    border: 2px solid black;
+.settings-panel {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    background: rgba(26, 26, 46, 0.9);
     padding: 20px;
     border-radius: 10px;
+    color: white;
 }
 
-/* ページ全体の背景色を変更 */
-body.clock {
-    background: #1a1a2e;
+.settings-panel label {
+    display: block;
+    margin: 10px 0;
 }
 
-body.pomodoro {
-    background: #2e1a1a;
+.settings-panel select {
+    margin-left: 10px;
 }
 
-body.countdown {
-    background: #1a2e1a;
+.settings-panel button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border: 2px solid black;
+    border-radius: 25px;
+    background: white;
+    color: black;
+    cursor: pointer;
+    font-size: 1em;
 }
