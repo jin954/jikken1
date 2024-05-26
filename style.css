@@ -14,14 +14,9 @@ body {
     font-size: 0.8em;
 }
 
-#time, #countdownDisplay {
+#time {
     font-size: 2em;
     letter-spacing: -0.03em;
-}
-
-#timer {
-    font-size: 3em;
-    margin: 20px 0; /* ポモドーロの数字とボタンとの間隔を広げる */
 }
 
 #clock, #pomodoro, #countdown {
@@ -40,7 +35,7 @@ body {
 }
 
 .switch label {
-    margin-right: 20px; /* ラジオボタン間の間隔を広げる */
+    margin-right: 10px;
     padding: 5px 10px;
     border: 2px solid black;
     border-radius: 25px;
@@ -68,20 +63,20 @@ body {
     margin-bottom: 20px;
 }
 
-#pomodoro .buttons button, #countdown .buttons button, .settings-button {
-    margin: 0 10px; /* ボタン間の間隔を広げる */
-    padding: 10px 20px; /* ボタンのパディングを調整 */
+#pomodoro .buttons button, #countdown .buttons button {
+    margin: 0 5px;
+    padding: 5px 15px;
     border: 2px solid black;
     border-radius: 25px;
     background: white;
     color: black;
     cursor: pointer;
-    font-size: 1.5em;
+    font-size: 0.8em;
 }
 
 #timer, #countdownDisplay {
     font-size: 2em;
-    margin: 20px 0; /* CDの数字とボタンとの間隔を広げる */
+    margin: 10px 0;
 }
 
 .pomodoro-controls {
@@ -91,14 +86,24 @@ body {
 }
 
 .pomodoro-controls button {
-    margin: 0 10px; /* ボタン間の間隔を広げる */
-    padding: 10px 20px; /* ボタンのパディングを調整 */
+    margin: 0 5px;
+    padding: 5px 10px;
     border: 2px solid black;
     border-radius: 25px;
     background: white;
     color: black;
     cursor: pointer;
     font-size: 1em;
+}
+
+.settings-button {
+    font-size: 1.5em;
+    padding: 5px;
+    border: 2px solid black;
+    border-radius: 25px;
+    background: white;
+    color: black;
+    cursor: pointer;
 }
 
 .settings-panel {
