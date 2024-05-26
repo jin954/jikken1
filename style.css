@@ -11,7 +11,7 @@ body {
 }
 
 #date {
-    font-size: 0.5em;
+    font-size: 0.8em;
 }
 
 #time {
@@ -49,17 +49,12 @@ body {
 #pomodoro .buttons button, #countdown .buttons button {
     margin: 0 5px;
     padding: 5px 15px;
-    border: none;
+    border: 2px solid black;
     border-radius: 25px;
     background: white;
-    color: #1a1a2e;
+    color: black;
     cursor: pointer;
     font-size: 0.8em;
-}
-
-#pomodoro .buttons button.active, #countdown .buttons button.active {
-    background: #e94560;
-    color: white;
 }
 
 #timer, #countdownDisplay {
@@ -76,10 +71,10 @@ body {
 .pomodoro-controls button {
     margin: 0 5px;
     padding: 5px 10px;
-    border: none;
+    border: 2px solid black;
     border-radius: 25px;
     background: white;
-    color: #1a1a2e;
+    color: black;
     cursor: pointer;
     font-size: 1em;
 }
@@ -110,4 +105,24 @@ body {
 
 .settings-panel input[type="color"], .settings-panel input[type="number"], .settings-panel select {
     margin-left: 10px;
+}
+
+.color-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.color-container div {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.color-container input[type="color"] {
+    width: 30px;
+    height: 30px;
+    border: none;
+    padding: 0;
 }
