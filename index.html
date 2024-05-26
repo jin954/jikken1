@@ -1,1 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock and Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="clock" class="active">
+        <div id="date"></div>
+        <div id="time"></div>
+        <button id="clock-settings" class="settings-button">&#9881;</button>
+    </div>
+
+    <div id="pomodoro">
+        <div class="buttons">
+            <button id="pomodoroMode">Pomodoro</button>
+            <button id="shortBreakMode">Short Break</button>
+            <button id="longBreakMode">Long Break</button>
+        </div>
+        <div id="timer">25:00</div>
+        <div class="pomodoro-controls">
+            <button id="startTimer">Start</button>
+            <button id="resetTimer">&#8635;</button>
+            <button id="pomodoro-settings" class="settings-button">&#9881;</button>
+        </div>
+    </div>
+
+    <div id="countdown">
+        <div id="countdownDisplay">00日00時間00分00秒</div>
+        <div class="pomodoro-controls">
+            <button id="startCountdown">Start</button>
+            <button id="resetCountdown">&#8635;</button>
+            <button id="countdown-settings" class="settings-button">&#9881;</button>
+        </div>
+    </div>
+
+    <div class="switch">
+        <label><input type="radio" name="mode" value="clock" checked> 時計</label>
+        <label><input type="radio" name="mode" value="pomodoro"> ポモドーロ</label>
+        <label><input type="radio" name="mode" value="countdown"> CD</label>
+    </div>
+
+    <div id="clock-settings-panel" class="settings-panel" style="display:none;">
+        <label>表示形式:
+            <select id="time-format">
+                <option value="24h">24時間表記</option>
+                <option value="12h">AM/PM表記</option>
+            </select>
+        </label>
+        <label><input type="checkbox" id="show-seconds"> 秒数を表示</label>
+        <label>背景色:
+            <select id="bg-color">
+                <option value="#1a1a2e">デフォルト</option>
+                <option value="#ffffff">白</option>
+                <option value="#000000">黒</option>
+                <option value="#ff0000">赤</option>
+                <option value="#00ff00">緑</option>
+                <option value="#0000ff">青</option>
+                <option value="#ffff00">黄</option>
+                <option value="#ff00ff">紫</option>
+                <option value="#00ffff">水色</option>
+            </select>
+        </label>
+        <label>文字色:
+            <select id="text-color">
+                <option value="white">デフォルト</option>
+                <option value="black">黒</option>
+                <option value="red">赤</option>
+                <option value="green">緑</option>
+                <option value="blue">青</option>
+                <option value="yellow">黄</option>
+                <option value="purple">紫</option>
+                <option value="cyan">水色</option>
+            </select>
+        </label>
+        <button id="close-clock-settings">閉じる</button>
+    </div>
+
+    <div id="pomodoro-settings-panel" class="settings-panel" style="display:none;">
+        <label>Pomodoro: <input type="number" id="pomodoroMinutes" value="25"> 分</label>
+        <label>Short Break: <input type="number" id="shortBreakMinutes" value="5"> 分</label>
+        <label>Long Break: <input type="number" id="longBreakMinutes" value="15"> 分</label>
+        <label>背景色:
+            <select id="bg-color-pomodoro">
+                <option value="#1a1a2e">デフォルト</option>
+                <option value="#ffffff">白</option>
+                <option value="#000000">黒</option>
+                <option value="#ff0000">赤</option>
+                <option value="#00ff00">緑</option>
+                <option value="#0000ff">青</option>
+                <option value="#ffff00">黄</option>
+                <option value="#ff00ff">紫</option>
+                <option value="#00ffff">水色</option>
+            </select>
+        </label>
+        <label>文字色:
+            <select id="text-color-pomodoro">
+                <option value="white">デフォルト</option>
+                <option value="black">黒</option>
+                <option value="red">赤</option>
+                <option value="green">緑</option>
+                <option value="blue">青</option>
+                <option value="yellow">黄</option>
+                <option value="purple">紫</option>
+                <option value="cyan">水色</option>
+            </select>
+        </label>
+        <button id="close-pomodoro-settings">閉じる</button>
+    </div>
+
+    <div id="countdown-settings-panel" class="settings-panel" style="display:none;">
+        <label>Year: <input type="number" id="countdownYear" value="2024"></label>
+        <label>Month: <input type="number" id="countdownMonth" value="12"></label>
+        <label>Day: <input type="number" id="countdownDay" value="31"></label>
+        <label>Hour: <input type="number" id="countdownHour" value="23"></label>
+        <label>Minute: <input type="number" id="countdownMinute" value="59"></label>
+        <label>Second: <input type="number" id="countdownSecond" value="59"></label>
+        <label>背景色:
+            <select id="bg-color-countdown">
+                <option value="#1a1a2e">デフォルト</option>
+                <option value="#ffffff">白</option>
+                <option value="#000000">黒</option>
+                <option value="#ff0000">赤</option>
+                <option value="#00ff00">緑</option>
+                <option value="#0000ff">青</option>
+                <option value="#ffff00">黄</option>
+                <option value="#ff00ff">紫</option>
+                <option value="#00ffff">水色</option>
+            </select>
+        </label>
+        <label>文字色:
+            <select id="text-color-countdown">
+                <option value="white">デフォルト</option>
+                <option value="black">黒</option>
+                <option value="red">赤</option>
+                <option value="green">緑</option>
+                <option value="blue">青</option>
+                <option value="yellow">黄</option>
+                <option value="purple">紫</option>
+                <option value="cyan">水色</option>
+            </select>
+        </label>
+        <button id="close-countdown-settings">閉じる</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
 
