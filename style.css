@@ -10,84 +10,36 @@ body {
     color: white;
 }
 
-#date {
-    font-size: 0.8em;
-}
-
-#time, #countdownDisplay {
-    font-size: 2em;
-    letter-spacing: -0.03em;
-}
-
-#timer {
-    font-size: 3.5em;
-    margin: 10px 0;
-}
-
-#clock, #pomodoro, #countdown {
+#pomodoro {
     text-align: center;
-    display: none;
-}
-
-#clock.active, #pomodoro.active, #countdown.active {
-    display: block;
-}
-
-.switch {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-}
-
-.switch label {
-    margin-right: 10px;
-    padding: 5px 10px;
-    border: 2px solid black;
-    border-radius: 25px;
-    background: white;
-    color: black;
-    cursor: pointer;
-}
-
-.switch input[type="radio"] {
-    display: none;
-}
-
-.switch input[type="radio"]:checked + label {
-    background: black;
-    color: white;
-}
-
-#pomodoro, #countdown {
     transform: scale(0.8);
 }
 
-#pomodoro .buttons, #countdown .buttons {
+#pomodoro .buttons {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
 }
 
-#pomodoro .buttons button, #countdown .buttons button, .settings-button {
+#pomodoro .buttons button {
     margin: 0 5px;
     padding: 5px 15px;
-    border: 2px solid black;
+    border: none;
     border-radius: 25px;
-    background: white;
-    color: black;
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
     cursor: pointer;
-    font-size: 0.8em; /* 時計の歯車アイコンのサイズ設定 */
+    font-size: 1em;
 }
 
-#timer, #countdownDisplay {
-    font-size: 3.5em;
-    margin: 15px 0;
+#pomodoro .buttons button.active {
+    background: white;
+    color: #1a1a2e;
 }
 
-/* CDの「日」、「時間」、「分」、「秒」を小さくする */
-#countdownDisplay span {
-    font-size: 0.5em; /* 数字の半分の大きさに設定 */
-    vertical-align: middle;
+#timer {
+    font-size: 6em;
+    margin: 20px 0;
 }
 
 .pomodoro-controls {
@@ -96,55 +48,74 @@ body {
     margin-bottom: 10px;
 }
 
-.pomodoro-controls button {
+.pomodoro-controls .icon-button {
     margin: 0 5px;
-    padding: 5px 10px;
-    border: 2px solid black;
-    border-radius: 25px;
+    padding: 0;
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
     background: white;
-    color: black;
+    color: #1a1a2e;
     cursor: pointer;
     font-size: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.settings-button {
-    font-size: 0.5em; /* 時計の設定ボタンを小さくする */
-    padding: 5px;
-    border: 2px solid black;
+.pomodoro-controls .start-button {
+    margin: 0 5px;
+    padding: 5px 30px;
+    border: none;
     border-radius: 25px;
     background: white;
-    color: black;
+    color: #1a1a2e;
     cursor: pointer;
-    margin-top: 20px; /* 時計のアイコンと数字の間隔を広げる */
+    font-size: 1.5em;  /* フォントサイズを大きく */
+    font-weight: bold; /* フォントを太く */
 }
 
-.settings-panel {
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%, -10%);
-    background: rgba(26, 26, 46, 0.9);
-    padding: 20px;
+#open-settings {
+    font-size: 1.5em;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 25px;
+    background: white;
+    color: #1a1a2e;
+    cursor: pointer;
+}
+
+#settings {
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
     border-radius: 10px;
-    color: white;
+    background: white;
+    color: #1a1a2e;
+    
 }
 
-.settings-panel label {
+#settings label {
     display: block;
     margin: 10px 0;
 }
 
-.settings-panel select {
-    margin-left: 10px;
+#settings input {
+    width: 50px;
+    padding: 5px;
+    border: 1px solid #1a1a2e;
+    border-radius: 5px;
 }
 
-.settings-panel button {
+#settings button {
     margin-top: 10px;
-    padding: 5px 10px;
-    border: 2px solid black;
+    padding: 5px 15px;
+    border: none;
     border-radius: 25px;
-    background: white;
-    color: black;
+    background: #1a1a2e;
+    color: white;
     cursor: pointer;
     font-size: 1em;
 }
