@@ -1,7 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Load settings from localStorage
-    loadSettings();
-
     const startButton = document.getElementById('start-pomodoro');
     const resetButton = document.getElementById('reset-pomodoro');
     const settingsButton = document.getElementById('open-settings');
@@ -9,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const pomodoroMinutesInput = document.getElementById('pomodoro-minutes');
     const shortBreakMinutesInput = document.getElementById('short-break-minutes');
     const longBreakMinutesInput = document.getElementById('long-break-minutes');
+
+    // Load settings from localStorage
+    loadSettings();
 
     startButton.addEventListener('click', startPomodoro);
     resetButton.addEventListener('click', resetPomodoro);
