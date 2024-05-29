@@ -54,6 +54,11 @@ body {
          1px  1px 0 #000;
 }
 
+#timer.white-bg {
+    color: black;
+    text-shadow: none;
+}
+
 .pomodoro-controls {
     display: flex;
     justify-content: center;
