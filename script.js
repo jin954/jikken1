@@ -86,8 +86,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // Update the background color
         document.body.style.backgroundColor = backgroundColor;
 
-        // Update button styles based on background color
-        updateButtonStyles(backgroundColor);
+        // Update styles based on background color
+        updateStyles(backgroundColor);
 
         toggleSettings();
     }
@@ -109,8 +109,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // Set the background color
         document.body.style.backgroundColor = backgroundColor;
 
-        // Update button styles based on background color
-        updateButtonStyles(backgroundColor);
+        // Update styles based on background color
+        updateStyles(backgroundColor);
     }
 
     function setMode(mode) {
@@ -129,8 +129,8 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('timer').textContent = `${longBreakMinutesInput.value}:00`;
         }
 
-        // Update button styles based on background color
-        updateButtonStyles(document.body.style.backgroundColor);
+        // Update styles based on background color
+        updateStyles(document.body.style.backgroundColor);
     }
 
     function updateTimer() {
@@ -146,12 +146,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function updateButtonStyles(backgroundColor) {
+    function updateStyles(backgroundColor) {
         const activeButton = document.querySelector('.buttons button.active');
+        const timer = document.getElementById('timer');
+
         if (backgroundColor === '#FFFFFF') {
             activeButton.classList.add('white-bg');
+            timer.classList.add('white-bg');
         } else {
             document.querySelectorAll('.buttons button').forEach(button => button.classList.remove('white-bg'));
+            timer.classList.remove('white-bg');
         }
     }
 });
