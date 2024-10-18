@@ -3,34 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pomodoro Timer</title>
+    <title>画像スライダーウィジェット</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="pomodoro">
-        <div class="buttons">
-            <button id="pomodoro-mode" class="active">Pomodoro</button>
-            <button id="short-break-mode">Short Break</button>
-            <button id="long-break-mode">Long Break</button>
-        </div>
-        <div id="timer">25:00</div>
-        <div class="pomodoro-controls">
-            <button id="start-pomodoro" class="start-button">Start</button>
-            <button id="reset-pomodoro" class="icon-button">🔄</button>
-            <button id="open-settings" class="icon-button">⚙️</button>
-        </div>
-        <div id="settings" style="display: none;">
-            <label>Pomodoro: <input type="number" id="pomodoro-minutes" value="25" min="1" max="60"> 分</label>
-            <label>Short Break: <input type="number" id="short-break-minutes" value="5" min="1" max="30"> 分</label>
-            <label>Long Break: <input type="number" id="long-break-minutes" value="15" min="1" max="60"> 分</label>
-            <label>Background Color:
-                <select id="background-color">
-                    <option value="#6633FF">Purple</option>
-                    <option value="#FFFFFF">White</option>
-                    <option value="#000000">Black</option>
-                </select>
-            </label>
-            <button id="set-pomodoro">設定</button>
+    <div class="image-container" id="imageContainer">
+        <img src="default_image.png" id="currentImage" class="image" alt="画像表示エリア">
+    </div>
+    <div class="control-buttons">
+        <span class="triangle-button" onclick="prevImage()">&#9664;</span>
+        <span class="triangle-button" onclick="openSettings()">&#9679;</span>
+        <span class="triangle-button" onclick="nextImage()">&#9654;</span>
+    </div>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeSettings()">&times;</span>
+            <h2>設定</h2>
+            
+            <!-- タイマー/アラームモード選択 -->
+            <div class="settings-row">
+                <label>モードを選択:</label>
+                <button onclick="selectMode('timer')">タイマー</button>
+                <button onclick="selectMode('alarm')">アラーム</button>
+            </div>
+
+            <!-- タイマー設定 -->
+            <div class="timer-settings">
+                <label>タイマー: </label>
+                <input type="number" id="timerHours" min="0" max="23" value="0"> 時間
+                <input type="number" id="timerMinutes" min="0" max="59" value="0"> 分
+            </div>
+
+            <!-- アラーム設定 -->
+            <div class="alarm-settings" style="display:none;">
+                <label>アラーム: </label>
+                <input type="number" id="alarmDays" min="0" value="0"> 日後
+                <input type="time" id="alarmTime">
+            </div>
+
+            <div class="settings-row">
+                <button onclick="saveSettings()">保存</button>
+            </div>
+            
+            <br>
+
+            <!-- 画像アップロードセクション -->
+            <label for="uploadImage">画像をアップロード:</label>
+            <input type="file" id="uploadImage" accept="image/*" multiple>
+            <button onclick="saveImages()">保存</button>
+            
+            <br><br> <!-- 追加されたスペース -->
+
+            <!-- 登録済み画像リスト -->
+            <h3>登録済み画像</h3>
+            <div id="imageListContainer">
+                <div id="imageList"></div>
+            </div>
+
+            <br>
+            <button onclick="closeSettings()">閉じる</button>
         </div>
     </div>
 
