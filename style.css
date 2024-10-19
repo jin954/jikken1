@@ -76,7 +76,7 @@ body {
 }
 
 .settings-row input[type="number"] {
-    width: 25px; /* 数値入力フィールドを小さくする */
+    width: 70px; /* 数値入力フィールドを小さくする */
 }
 
 #imageListContainer {
@@ -100,16 +100,18 @@ body {
 }
 
 .timer-settings, .alarm-settings {
+    display: flex; /* フレックスボックスを使用 */
+    align-items: center; /* 垂直方向に中央揃え */
     margin-top: 10px; /* 各セクション間にスペースを追加 */
 }
+
+.timer-settings button, .alarm-settings button {
+    margin-left: 10px; /* ボタンの左側にマージンを追加 */
+}
+
 
 #uploadImage {
     margin-bottom: 20px; /* ファイル選択と画像リストの間に余白を追加 */
-}
-
-/* 既存のCSSコードの後に追加 */
-.timer-settings, .alarm-settings {
-    margin-top: 10px; /* 各セクション間にスペースを追加 */
 }
 
 #uploadImage {
@@ -126,10 +128,18 @@ body {
     margin-right: 0; /* 最後のボタンにはマージンを適用しない */
 }
 
-#alarmDays {
-    width: 50px; /* アラーム日数フィールドの幅 */
+#alarmTime {
+    width: 70px; /* アラーム時刻フィールドの幅 */
 }
 
-#alarmTime {
-    width: 50px; /* アラーム時刻フィールドの幅 */
+/* 既存のCSSの下に追加 */
+.input-time {
+    width: 70px; /* 同じ幅を指定 */
+    text-align: center; /* 文字を中央に配置 */
+    margin-right: 10px; /* ラベルとのスペース */
+}
+
+/* 既存のCSSコードの後に追加 */
+.timer-settings, .alarm-settings {
+    margin-top: 10px; /* 各セクション間にスペースを追加 */
 }
