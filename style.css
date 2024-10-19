@@ -65,7 +65,7 @@ body {
 
 .settings-row {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start; /* 横方向に左揃え */
     align-items: center;
     margin-bottom: 10px;
 }
