@@ -12,7 +12,7 @@ body {
     height: 400px;
     margin: 20px auto;
     position: relative;
-    background-color: white; /* 背景を白に変更 */
+    background-color: white;
     overflow: hidden;
 }
 
@@ -29,11 +29,11 @@ body {
 
 .triangle-button {
     cursor: pointer;
-    font-size: 60px; /* ボタンのサイズを大きく */
+    font-size: 60px;
     margin: 0 5px;
-    padding: 5px 10px; /* ボタンの内側の余白を調整 */
-    width: 45px; /* ボタン自体の幅を大きくする */
-    height: 45px; /* ボタン自体の高さを大きくする */
+    padding: 5px 10px;
+    width: 45px;
+    height: 45px;
 }
 
 .modal {
@@ -52,8 +52,8 @@ body {
     margin: 10% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 400px; /* 幅を広げて調整 */
-    text-align: left;
+    width: 400px;
+    text-align: center;
 }
 
 .close-button {
@@ -66,13 +66,13 @@ body {
 .settings-row {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* 左右に均等配置 */
-    margin-bottom: 5px;
+    justify-content: flex-start; /* ボタンを左寄せに修正 */
+    margin-bottom: 10px;
 }
 
 .mode-buttons {
     display: flex;
-    gap: 10px; /* ボタン同士の間隔をスクリーンショット通りに狭める */
+    gap: 30px; /* ボタンの間隔を30pxに */
 }
 
 .timer-settings {
@@ -83,11 +83,11 @@ body {
 }
 
 .timer-settings input, .timer-settings label {
-    margin-right: 5px; /* 入力ボックスとラベルの間隔を調整 */
+    margin-right: 5px;
 }
 
 .save-button {
-    margin-left: 5px; /* 保存ボタンの位置を微調整 */
+    margin-left: 5px;
 }
 
 #imageListContainer {
@@ -105,7 +105,7 @@ body {
 
 .image-item {
     display: flex;
-    justify-content: space-between; /* 左右に揃える */
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 5px;
 }
@@ -116,6 +116,10 @@ body {
 
 .image-item-buttons {
     display: flex;
-    gap: 5px; /* ボタン同士の間隔を保持 */
+    gap: 5px;
     justify-content: flex-end;
+}
+
+h2 {
+    text-align: center;
 }
