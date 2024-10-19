@@ -85,6 +85,15 @@ function saveSettings() {
         alert(`毎日 ${alarmTime} に画像が切り替わります`);
         startAlarmCheck(); // アラームチェックを開始
     }
+
+    // 「保存」ボタンを「設定済み」に変更
+    const saveButton = document.getElementById("saveButton");
+    saveButton.textContent = "設定済み";
+    saveButton.disabled = true;
+
+    // 「リセット」ボタンを表示
+    const resetButton = document.getElementById("resetButton");
+    resetButton.style.display = "inline";
 }
 
 // アラームチェック関数
@@ -100,6 +109,26 @@ function startAlarmCheck() {
     }
 
     setTimeout(startAlarmCheck, 60000); // 1分おきに再チェック
+}
+
+// 設定をリセット
+function resetSettings() {
+    localStorage.removeItem("displayTime");
+    localStorage.removeItem("alarmTime");
+    displayTime = 0;
+    alarmTime = '';
+
+    clearTimeout(timer); // タイマーを停止
+    loadImage(currentIndex); // 初期画像を再表示
+
+    // 「設定済み」を「保存」に戻す
+    const saveButton = document.getElementById("saveButton");
+    saveButton.textContent = "保存";
+    saveButton.disabled = false;
+
+    // 「リセット」ボタンを非表示に
+    const resetButton = document.getElementById("resetButton");
+    resetButton.style.display = "none";
 }
 
 // 画像をアップロードして保存
@@ -189,4 +218,15 @@ window.onload = function () {
     loadImage(currentIndex);
     startTimer(); // タイマーの初期化
     startAlarmCheck(); // アラームのチェックも開始
+
+    // 設定があれば「保存」を「設定済み」に変更
+    const saveButton = document.getElementById("saveButton");
+    if (localStorage.getItem("displayTime") || localStorage.getItem("alarmTime")) {
+        saveButton.textContent = "設定済み";
+        saveButton.disabled = true;
+
+        // 「リセット」ボタンを表示
+        const resetButton = document.getElementById("resetButton");
+        resetButton.style.display = "inline";
+    }
 };
