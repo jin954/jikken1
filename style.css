@@ -1,1 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
 
+.image-container {
+    border: 2px solid black;
+    width: 600px;
+    height: 400px;
+    margin: 20px auto;
+    position: relative;
+    background-color: white; /* 背景を白に変更 */
+    overflow: hidden;
+}
+
+.image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.control-buttons {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.triangle-button {
+    cursor: pointer;
+    font-size: 60px; /* ボタンのサイズを大きく */
+    margin: 0 5px;
+    padding: 5px 10px; /* ボタンの内側の余白を調整 */
+    width: 45px; /* ボタン自体の幅を大きくする */
+    height: 45px; /* ボタン自体の高さを大きくする */
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 350px;
+    text-align: left;
+}
+
+.close-button {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.settings-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.settings-row input[type="number"] {
+    width: 50px; /* 数値入力フィールドを小さくする */
+}
+
+#imageListContainer {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.image-item {
+    display: flex;
+    justify-content: space-between; /* 左右に揃える */
+    align-items: center; /* 上下の中央揃え */
+    margin-bottom: 5px;
+}
+
+.image-item-buttons {
+    display: flex;
+    justify-content: flex-end; /* 右端に揃える */
+    gap: 0; /* ボタン同士のスペースをなくす */
+}
+
+.timer-settings, .alarm-settings {
+    margin-top: 10px; /* 各セクション間にスペースを追加 */
+}
+
+#uploadImage {
+    margin-bottom: 20px; /* ファイル選択と画像リストの間に余白を追加 */
+}
