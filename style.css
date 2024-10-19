@@ -70,12 +70,8 @@ body {
     margin-bottom: 10px;
 }
 
-.timer-settings, .alarm-settings {
-    margin-top: 10px;
-}
-
-#uploadImage {
-    margin-bottom: 20px;
+.settings-row input[type="number"] {
+    width: 50px;
 }
 
 #imageListContainer {
@@ -92,30 +88,16 @@ body {
     margin-bottom: 5px;
 }
 
-.image-item img {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-}
-
 .image-item-buttons {
     display: flex;
     justify-content: flex-end;
     gap: 5px;
 }
 
-button {
-    background-color: #f0f0f0;
-    border: 1px solid #888;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 14px;
+.timer-settings, .alarm-settings {
+    margin-top: 10px;
 }
 
-button:hover {
-    background-color: #ddd;
-}
-
-button:active {
-    background-color: #bbb;
+#uploadImage {
+    margin-bottom: 20px;
 }
