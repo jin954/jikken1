@@ -127,9 +127,9 @@ body {
 }
 
 #alarmDays {
-    width: 40px; /* アラーム日数フィールドの幅 */
+    width: 10px; /* アラーム日数フィールドの幅 */
 }
 
 #alarmTime {
-    width: 100px; /* アラーム時刻フィールドの幅 */
+    width: 50px; /* アラーム時刻フィールドの幅 */
 }
