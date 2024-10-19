@@ -125,3 +125,11 @@ body {
 .settings-row button:last-child {
     margin-right: 0; /* 最後のボタンにはマージンを適用しない */
 }
+
+#alarmDays {
+    width: 40px; /* アラーム日数フィールドの幅 */
+}
+
+#alarmTime {
+    width: 100px; /* アラーム時刻フィールドの幅 */
+}
