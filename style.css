@@ -91,7 +91,7 @@ body {
 .image-item-buttons {
     display: flex;
     justify-content: flex-end;
-    gap: 5px;
+    gap: 0;
 }
 
 .timer-settings, .alarm-settings {
