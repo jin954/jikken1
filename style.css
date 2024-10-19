@@ -133,3 +133,12 @@ body {
 #alarmTime {
     width: 25px; /* アラーム時刻フィールドの幅 */
 }
+
+* {
+    box-sizing: border-box; /* すべての要素にボックスモデルを適用 */
+}
+
+.timer-settings input[type="number"],
+.alarm-settings input[type="number"] {
+    width: 40px; /* 幅を統一 */
+}
