@@ -56,6 +56,11 @@ body {
     text-align: left;
 }
 
+.modal-content h2 {
+    text-align: center; /* 中央に配置 */
+    margin: 20px 0; /* 上下のマージンを追加 */
+}
+
 .close-button {
     float: right;
     font-size: 28px;
