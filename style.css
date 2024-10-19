@@ -12,7 +12,7 @@ body {
     height: 400px;
     margin: 20px auto;
     position: relative;
-    background-color: white;
+    background-color: white; /* 背景を白に変更 */
     overflow: hidden;
 }
 
@@ -29,11 +29,11 @@ body {
 
 .triangle-button {
     cursor: pointer;
-    font-size: 60px;
+    font-size: 60px; /* ボタンのサイズを大きく */
     margin: 0 5px;
-    padding: 5px 10px;
-    width: 45px;
-    height: 45px;
+    padding: 5px 10px; /* ボタンの内側の余白を調整 */
+    width: 45px; /* ボタン自体の幅を大きくする */
+    height: 45px; /* ボタン自体の高さを大きくする */
 }
 
 .modal {
@@ -57,8 +57,8 @@ body {
 }
 
 .modal-content h2 {
-    text-align: center;
-    margin: 20px 0;
+    text-align: center; /* 中央に配置 */
+    margin: 20px 0; /* 上下のマージンを追加 */
 }
 
 .close-button {
@@ -70,13 +70,13 @@ body {
 
 .settings-row {
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-start; /* 横方向に左揃え */
     align-items: center;
     margin-bottom: 10px;
 }
 
 .settings-row input[type="number"] {
-    width: 40px;
+    width: 25px; /* 数値入力フィールドを小さくする */
 }
 
 #imageListContainer {
@@ -88,26 +88,48 @@ body {
 
 .image-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-between; /* 左右に揃える */
+    align-items: center; /* 上下の中央揃え */
     margin-bottom: 5px;
 }
 
 .image-item-buttons {
     display: flex;
-    justify-content: flex-end;
-    gap: 0;
+    justify-content: flex-end; /* 右端に揃える */
+    gap: 0; /* ボタン同士のスペースをなくす */
 }
 
 .timer-settings, .alarm-settings {
-    margin-top: 10px;
+    margin-top: 10px; /* 各セクション間にスペースを追加 */
 }
 
 #uploadImage {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* ファイル選択と画像リストの間に余白を追加 */
 }
 
-/* すべての要素にボックスモデルを適用 */
-* {
-    box-sizing: border-box;
+/* 既存のCSSコードの後に追加 */
+.timer-settings, .alarm-settings {
+    margin-top: 10px; /* 各セクション間にスペースを追加 */
+}
+
+#uploadImage {
+    margin-bottom: 20px; /* ファイル選択と画像リストの間に余白を追加 */
+}
+
+/* 以下に追加 */
+.settings-row label,
+.settings-row button {
+    margin-right: 10px; /* 各要素の右側に10pxのマージンを追加 */
+}
+
+.settings-row button:last-child {
+    margin-right: 0; /* 最後のボタンにはマージンを適用しない */
+}
+
+#alarmDays {
+    width: 50px; /* アラーム日数フィールドの幅 */
+}
+
+#alarmTime {
+    width: 50px; /* アラーム時刻フィールドの幅 */
 }
