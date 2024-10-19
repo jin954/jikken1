@@ -2,7 +2,7 @@ let images = JSON.parse(localStorage.getItem("images")) || [];
 let currentIndex = 0;
 let displayTime = (localStorage.getItem("displayTime") || 0) * 60 * 1000; 
 let timer;
-let selectedMode = 'timer'; // タイマーがデフォルトモード
+let selectedMode = localStorage.getItem("selectedMode") || 'timer'; // デフォルトはタイマー
 let alarmTime = localStorage.getItem("alarmTime") || ''; // アラーム時刻を保持
 
 // 初期設定の画像
@@ -35,14 +35,25 @@ function prevImage() {
 // タイマーを開始
 function startTimer() {
     clearTimeout(timer); // 既存のタイマーをクリア
-    if (displayTime > 0) {
-        timer = setTimeout(nextImage, displayTime); // タイマーを再設定
+    const savedStartTime = localStorage.getItem("timerStartTime");
+    if (savedStartTime) {
+        const elapsed = Date.now() - new Date(savedStartTime).getTime();
+        const remainingTime = displayTime - elapsed;
+        if (remainingTime > 0) {
+            timer = setTimeout(nextImage, remainingTime);
+        } else {
+            nextImage(); // すでに経過している場合は次の画像へ
+        }
+    } else if (displayTime > 0) {
+        timer = setTimeout(nextImage, displayTime); // 新しいタイマーをセット
+        localStorage.setItem("timerStartTime", new Date().toISOString()); // 開始時間を保存
     }
 }
 
 // タイマーをリセット
 function resetTimer() {
     clearTimeout(timer); // 既存のタイマーをクリア
+    localStorage.removeItem("timerStartTime"); // 保存された開始時間をクリア
     startTimer(); // タイマーを再スタート
 }
 
@@ -60,12 +71,39 @@ function closeSettings() {
 // モード選択（タイマーとアラーム）
 function selectMode(mode) {
     selectedMode = mode;
+    localStorage.setItem("selectedMode", mode); // モードを保存
+
     if (mode === 'timer') {
         document.querySelector('.timer-settings').style.display = 'block';
         document.querySelector('.alarm-settings').style.display = 'none';
+        changeButtonColors("timer");
     } else {
         document.querySelector('.timer-settings').style.display = 'none';
         document.querySelector('.alarm-settings').style.display = 'block';
+        changeButtonColors("alarm");
+    }
+}
+
+// 保存ボタンの色を変更
+function changeSaveButtonColor() {
+    const saveButton = document.getElementById("saveButton");
+    saveButton.style.backgroundColor = "green"; // 保存後に色を緑に変更
+    setTimeout(() => {
+        saveButton.style.backgroundColor = ""; // 元の色に戻す
+    }, 2000); // 2秒後に元に戻す
+}
+
+// タイマーとアラームボタンの色変更
+function changeButtonColors(selectedMode) {
+    const timerButton = document.getElementById("timerButton");
+    const alarmButton = document.getElementById("alarmButton");
+
+    if (selectedMode === "timer") {
+        timerButton.style.backgroundColor = "lightblue"; // タイマー選択時の色
+        alarmButton.style.backgroundColor = "";
+    } else {
+        timerButton.style.backgroundColor = "";
+        alarmButton.style.backgroundColor = "lightblue"; // アラーム選択時の色
     }
 }
 
@@ -85,6 +123,9 @@ function saveSettings() {
         alert(`毎日 ${alarmTime} に画像が切り替わります`);
         startAlarmCheck(); // アラームチェックを開始
     }
+
+    // 保存ボタンの色を変更
+    changeSaveButtonColor();
 }
 
 // アラームチェック関数
@@ -118,75 +159,12 @@ function saveImages() {
     }
 }
 
-// 画像リストの更新
-function updateImageList() {
-    const imageList = document.getElementById("imageList");
-    imageList.innerHTML = "";
-    images.forEach((image, index) => {
-        const imageItem = document.createElement("div");
-        imageItem.classList.add("image-item");
-        
-        const img = document.createElement("img");
-        img.src = image.url;
-        img.width = 50;
-        img.height = 50;
-        imageItem.appendChild(img);
-
-        const buttonContainer = document.createElement("div");
-        buttonContainer.classList.add("image-item-buttons");
-
-        const upButton = document.createElement("button");
-        upButton.textContent = "↑";
-        upButton.onclick = () => moveImageUp(index);
-        buttonContainer.appendChild(upButton);
-
-        const downButton = document.createElement("button");
-        downButton.textContent = "↓";
-        downButton.onclick = () => moveImageDown(index);
-        buttonContainer.appendChild(downButton);
-
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "削除";
-        deleteButton.onclick = () => deleteImage(index);
-        buttonContainer.appendChild(deleteButton);
-
-        imageItem.appendChild(buttonContainer);
-        imageList.appendChild(imageItem);
-    });
-}
-
-// 画像を上に移動
-function moveImageUp(index) {
-    if (index > 0) {
-        const temp = images[index];
-        images[index] = images[index - 1];
-        images[index - 1] = temp;
-        localStorage.setItem("images", JSON.stringify(images));
-        updateImageList();
-    }
-}
-
-// 画像を下に移動
-function moveImageDown(index) {
-    if (index < images.length - 1) {
-        const temp = images[index];
-        images[index] = images[index + 1];
-        images[index + 1] = temp;
-        localStorage.setItem("images", JSON.stringify(images));
-        updateImageList();
-    }
-}
-
-// 画像を削除
-function deleteImage(index) {
-    images.splice(index, 1);
-    localStorage.setItem("images", JSON.stringify(images));
-    updateImageList();
-}
-
 // ページロード時に最初の画像を表示
 window.onload = function () {
     loadImage(currentIndex);
     startTimer(); // タイマーの初期化
     startAlarmCheck(); // アラームのチェックも開始
+
+    // 保存されたモードに応じて色を変更
+    changeButtonColors(selectedMode);
 };
