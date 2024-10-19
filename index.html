@@ -31,15 +31,15 @@
             </div>
 
             <!-- タイマー設定 -->
-            <div class="timer-settings">
+            <div class="timer-settings" id="timerSettings">
                 <label>タイマー: </label>
                 <input type="number" id="timerHours" min="0" max="23" value="0"> 時間
-                <input type="number" id="timerMinutes" min="0" max="59" value="0"> 分
+                <input type="number" id="timerMinutes" min="0" max="59" value="0"> 分後
                 <button class="save-button" onclick="saveSettings()">保存</button>
             </div>
 
             <!-- アラーム設定 -->
-            <div class="alarm-settings" style="display:none;">
+            <div class="alarm-settings" id="alarmSettings" style="display:none;">
                 <label>アラーム: </label>
                 <input type="number" id="alarmDays" min="0" value="0" style="width: 40px;"> 日後
                 <input type="time" id="alarmTime">
@@ -58,7 +58,7 @@
             <div id="imageListContainer">
                 <div id="imageList" class="image-list">
                     <div class="image-item">
-                        <span>画像1</span>
+                        <span>画像1: 画像の名前</span>
                         <div class="image-item-buttons">
                             <button onclick="moveImageUp(0)">↑</button>
                             <button onclick="moveImageDown(0)">↓</button>
@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <div class="image-item">
-                        <span>画像2</span>
+                        <span>画像2: 画像の名前</span>
                         <div class="image-item-buttons">
                             <button onclick="moveImageUp(1)">↑</button>
                             <button onclick="moveImageDown(1)">↓</button>
