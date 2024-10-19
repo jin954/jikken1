@@ -76,7 +76,7 @@ body {
 }
 
 .settings-row input[type="number"] {
-    width: 30px; /* 数値入力フィールドを小さくする */
+    width: 25px; /* 数値入力フィールドを小さくする */
 }
 
 #imageListContainer {
@@ -127,9 +127,9 @@ body {
 }
 
 #alarmDays {
-    width: 10px; /* アラーム日数フィールドの幅 */
+    width: 25px; /* アラーム日数フィールドの幅 */
 }
 
 #alarmTime {
-    width: 50px; /* アラーム時刻フィールドの幅 */
+    width: 25px; /* アラーム時刻フィールドの幅 */
 }
