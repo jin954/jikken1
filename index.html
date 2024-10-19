@@ -23,7 +23,7 @@
             
             <!-- タイマー/アラームモード選択 -->
             <div class="settings-row">
-                <label>モードを選択:</label>
+                <label>モード：</label> <!-- 変更: "モードを選択"から"モード："へ -->
                 <button onclick="selectMode('timer')">タイマー</button>
                 <button onclick="selectMode('alarm')">アラーム</button>
             </div>
@@ -38,7 +38,8 @@
             <!-- アラーム設定 -->
             <div class="alarm-settings" style="display:none;">
                 <label>アラーム: </label>
-                <input type="number" id="alarmDays" min="0" value="0"> 日後
+                <input type="number" id="alarmDays" min="0" value="0" style="width: 40px;"> <!-- 日付入力の幅を短縮 -->
+                日後
                 <input type="time" id="alarmTime">
             </div>
 
