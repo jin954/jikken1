@@ -1,50 +1,50 @@
-<div id="settingsModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <h2>設定</h2>
-        <div class="settings-row">
-            <label for="mode">モード:</label>
-            <div class="mode-buttons">
-                <button id="timerButton">タイマー</button>
-                <button id="alarmButton">アラーム</button>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画像スライダーウィジェット</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeSettings()">&times;</span>
+            <h2>設定</h2>
+
+            <!-- モード選択 -->
+            <div class="settings-row">
+                <label>モード:</label>
+                <button onclick="selectMode('timer')">タイマー</button>
+                <button onclick="selectMode('alarm')">アラーム</button>
             </div>
-        </div>
 
-        <div class="timer-settings">
-            <label for="timerHour">タイマー</label>
-            <input type="number" id="timerHour" placeholder="時間">
-            <input type="number" id="timerMinute" placeholder="分">
-            <button class="save-button">保存</button>
-        </div>
-
-        <div class="settings-row">
-            <label for="imageUpload">画像をアップロード:</label>
-            <input type="file" id="imageUpload">
-            <button class="save-button">保存</button>
-        </div>
-
-        <div id="imageListContainer">
-            <p>登録済み画像</p>
-            <div class="image-list">
-                <div class="image-item">
-                    <span>画像1: 画像の名前</span>
-                    <div class="image-item-buttons">
-                        <button>↑</button>
-                        <button>↓</button>
-                        <button>削除</button>
-                    </div>
-                </div>
-                <div class="image-item">
-                    <span>画像2: 画像の名前</span>
-                    <div class="image-item-buttons">
-                        <button>↑</button>
-                        <button>↓</button>
-                        <button>削除</button>
-                    </div>
-                </div>
+            <!-- タイマー設定 -->
+            <div class="timer-settings">
+                <label>タイマー:</label>
+                <input type="number" id="timerHours" min="0" max="23" value="0"> 時間
+                <input type="number" id="timerMinutes" min="0" max="59" value="0"> 分
+                <button onclick="saveSettings()">保存</button>
             </div>
-        </div>
 
-        <button id="closeModalButton">閉じる</button>
+            <!-- 画像アップロードセクション -->
+            <div class="settings-row">
+                <label for="uploadImage">画像をアップロード:</label>
+                <input type="file" id="uploadImage" accept="image/*" multiple>
+                <button onclick="saveImages()">保存</button>
+            </div>
+
+            <!-- 登録済み画像リスト -->
+            <h3>登録済み画像</h3>
+            <div id="imageListContainer">
+                <div id="imageList"></div>
+            </div>
+
+            <br>
+            <button onclick="closeSettings()">閉じる</button>
+        </div>
     </div>
-</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
