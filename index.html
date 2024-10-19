@@ -1,72 +1,46 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>画像スライダーウィジェット</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="image-container" id="imageContainer">
-        <img src="default_image.png" id="currentImage" class="image" alt="画像表示エリア">
+<div class="settings-row">
+    <label class="left">モード：</label>
+    <div class="mode-buttons">
+        <button onclick="selectMode('timer')">タイマー</button>
+        <button onclick="selectMode('alarm')">アラーム</button>
     </div>
-    <div class="control-buttons">
-        <span class="triangle-button" onclick="prevImage()">&#9664;</span>
-        <span class="triangle-button" onclick="openSettings()">&#9679;</span>
-        <span class="triangle-button" onclick="nextImage()">&#9654;</span>
-    </div>
+</div>
 
-    <div id="settingsModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeSettings()">&times;</span>
-            <h2>設定</h2>
-            
-            <!-- タイマー/アラームモード選択 -->
-            <div class="settings-row">
-                <label class="left">モード：</label>
-                <button onclick="selectMode('timer')">タイマー</button>
-                <button onclick="selectMode('alarm')">アラーム</button>
+<!-- タイマー設定 -->
+<div class="timer-settings">
+    <label>タイマー: </label>
+    <input type="number" id="timerHours" min="0" max="23" value="0"> 時間
+    <input type="number" id="timerMinutes" min="0" max="59" value="0"> 分
+    <button class="save-button" onclick="saveSettings()">保存</button>
+</div>
+
+<!-- アラーム設定 -->
+<div class="alarm-settings" style="display:none;">
+    <label>アラーム: </label>
+    <input type="number" id="alarmDays" min="0" value="0" style="width: 40px;"> 日後
+    <input type="time" id="alarmTime">
+    <button class="save-button" onclick="saveSettings()">保存</button>
+</div>
+
+<!-- 画像リスト -->
+<div id="imageListContainer">
+    <h3>登録済み画像</h3>
+    <div id="imageList" class="image-list">
+        <div class="image-item">
+            <span>画像1</span>
+            <div class="image-item-buttons">
+                <button>↑</button>
+                <button>↓</button>
+                <button>削除</button>
             </div>
-
-            <!-- タイマー設定 -->
-            <div class="timer-settings">
-                <label>タイマー: </label>
-                <input type="number" id="timerHours" min="0" max="23" value="0"> 時間
-                <input type="number" id="timerMinutes" min="0" max="59" value="0"> 分
+        </div>
+        <div class="image-item">
+            <span>画像2</span>
+            <div class="image-item-buttons">
+                <button>↑</button>
+                <button>↓</button>
+                <button>削除</button>
             </div>
-
-            <!-- アラーム設定 -->
-            <div class="alarm-settings" style="display:none;">
-                <label>アラーム: </label>
-                <input type="number" id="alarmDays" min="0" value="0" style="width: 40px;"> <!-- 日付入力の幅を短縮 -->
-                日後
-                <input type="time" id="alarmTime">
-            </div>
-
-            <div class="settings-row">
-                <button onclick="saveSettings()">保存</button>
-            </div>
-            
-            <br>
-
-            <!-- 画像アップロードセクション -->
-            <label for="uploadImage">画像をアップロード:</label>
-            <input type="file" id="uploadImage" accept="image/*" multiple>
-            <button onclick="saveImages()">保存</button>
-            
-            <br><br> <!-- 追加されたスペース -->
-
-            <!-- 登録済み画像リスト -->
-            <h3>登録済み画像</h3>
-            <div id="imageListContainer">
-                <div id="imageList"></div>
-            </div>
-
-            <br>
-            <button onclick="closeSettings()">閉じる</button>
         </div>
     </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
+</div>
