@@ -52,7 +52,7 @@ body {
     margin: 10% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 350px;
+    width: 400px; /* 幅を広げて調整 */
     text-align: left;
 }
 
@@ -72,18 +72,22 @@ body {
 
 .mode-buttons {
     display: flex;
-    gap: 30px; /* ボタン同士の間隔を30pxに設定 */
+    gap: 10px; /* ボタン同士の間隔をスクリーンショット通りに狭める */
 }
 
-.save-button {
-    margin-left: 10px; /* 保存ボタンの位置を調整 */
-}
-
-.timer-settings, .alarm-settings {
+.timer-settings {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     margin-top: 10px;
+}
+
+.timer-settings input, .timer-settings label {
+    margin-right: 5px; /* 入力ボックスとラベルの間隔を調整 */
+}
+
+.save-button {
+    margin-left: 5px; /* 保存ボタンの位置を微調整 */
 }
 
 #imageListContainer {
@@ -91,6 +95,7 @@ body {
     overflow-y: auto;
     border: 1px solid #ccc;
     padding: 5px;
+    margin-top: 10px;
 }
 
 .image-list {
