@@ -3,16 +3,18 @@ let currentIndex = 0;
 let displayTime = (localStorage.getItem("displayTime") || 0) * 60 * 1000; 
 let timer;
 let selectedMode = 'timer'; // タイマーがデフォルトモード
+let alarmTime = localStorage.getItem("alarmTime") || ''; // アラーム時刻を保持
 
 // 初期設定の画像
 const defaultImage = "default_image.png"; 
 
 // 画像をロードする
 function loadImage(index) {
+    const currentImageElement = document.getElementById("currentImage");
     if (images.length > 0) {
-        document.getElementById("currentImage").src = images[index].url;
+        currentImageElement.src = images[index].url;
     } else {
-        document.getElementById("currentImage").src = defaultImage; // 初期画像
+        currentImageElement.src = defaultImage; // 初期画像を表示
     }
 }
 
@@ -20,25 +22,28 @@ function loadImage(index) {
 function nextImage() {
     currentIndex = (currentIndex + 1) % (images.length || 1);
     loadImage(currentIndex);
-    resetTimer();
+    resetTimer(); // タイマーをリセット
 }
 
 // 前の画像へ
 function prevImage() {
     currentIndex = (currentIndex - 1 + (images.length || 1)) % (images.length || 1);
     loadImage(currentIndex);
-    resetTimer();
+    resetTimer(); // タイマーをリセット
 }
 
 // タイマーを開始
 function startTimer() {
-    timer = setTimeout(nextImage, displayTime);
+    clearTimeout(timer); // 既存のタイマーをクリア
+    if (displayTime > 0) {
+        timer = setTimeout(nextImage, displayTime); // タイマーを再設定
+    }
 }
 
 // タイマーをリセット
 function resetTimer() {
-    clearTimeout(timer);
-    startTimer();
+    clearTimeout(timer); // 既存のタイマーをクリア
+    startTimer(); // タイマーを再スタート
 }
 
 // 設定モーダルを開く
@@ -96,7 +101,6 @@ function startAlarmCheck() {
 
     setTimeout(startAlarmCheck, 60000); // 1分おきに再チェック
 }
-
 
 // 画像をアップロードして保存
 function saveImages() {
@@ -183,5 +187,6 @@ function deleteImage(index) {
 // ページロード時に最初の画像を表示
 window.onload = function () {
     loadImage(currentIndex);
-    startTimer();
+    startTimer(); // タイマーの初期化
+    startAlarmCheck(); // アラームのチェックも開始
 };
