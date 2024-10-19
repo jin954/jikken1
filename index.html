@@ -3,62 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>画像切り替えアプリ</title>
-    <link rel="stylesheet" href="styles.css"> <!-- 外部CSSをリンク -->
+    <title>画像スライダーウィジェット</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="image-container" id="imageContainer">
+        <img src="default_image.png" id="currentImage" class="image" alt="画像表示エリア">
+    </div>
+    <div class="control-buttons">
+        <span class="triangle-button" onclick="prevImage()">&#9664;</span>
+        <span class="triangle-button" onclick="openSettings()">&#9679;</span>
+        <span class="triangle-button" onclick="nextImage()">&#9654;</span>
+    </div>
 
-<div class="image-container">
-    <img id="currentImage" class="image" src="default_image.png" alt="Current Image">
-</div>
-
-<div class="control-buttons">
-    <button class="triangle-button" onclick="prevImage()">&#9664;</button>
-    <button class="triangle-button" onclick="nextImage()">&#9654;</button>
-</div>
-
-<button onclick="openSettings()">設定</button>
-
-<div id="settingsModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeSettings()">&times;</span>
-        <h2>設定</h2>
-
-        <div class="settings-row">
-            <label>モード：</label>
-            <button onclick="selectMode('timer')">タイマー</button>
-            <button onclick="selectMode('alarm')">アラーム</button>
-        </div>
-
-        <div class="timer-settings">
-            <h3>タイマー設定</h3>
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeSettings()">&times;</span>
+            <h2>設定</h2>
+            
+            <!-- タイマー/アラームモード選択 -->
             <div class="settings-row">
-                <label>時間:</label>
-                <input type="number" id="timerHours" min="0" value="0"> 時間
+                <label>モード:</label>
+                <button onclick="selectMode('timer')">タイマー</button>
+                <button onclick="selectMode('alarm')">アラーム</button>
+            </div>
+
+            <!-- タイマー設定 -->
+            <div class="timer-settings">
+                <label>タイマー: </label>
+                <input type="number" id="timerHours" min="0" max="23" value="0"> 時間
                 <input type="number" id="timerMinutes" min="0" max="59" value="0"> 分
             </div>
-        </div>
 
-        <div class="alarm-settings" style="display: none;">
-            <h3>アラーム設定</h3>
-            <div class="settings-row">
-                <label>アラーム時刻:</label>
+            <!-- アラーム設定 -->
+            <div class="alarm-settings" style="display:none;">
+                <label>アラーム: </label>
                 <input type="time" id="alarmTime">
             </div>
-        </div>
 
-        <button onclick="saveSettings()">設定を保存</button>
+            <div class="settings-row">
+                <button onclick="saveSettings()">保存</button>
+            </div>
+            
+            <br>
 
-        <h3>画像リスト</h3>
-        <input type="file" id="uploadImage" multiple>
-        <button onclick="saveImages()">画像をアップロード</button>
+            <!-- 画像アップロードセクション -->
+            <label for="uploadImage">画像をアップロード:</label>
+            <input type="file" id="uploadImage" accept="image/*" multiple>
+            <button onclick="saveImages()">保存</button>
+            
+            <br><br> <!-- 追加されたスペース -->
 
-        <div id="imageListContainer">
-            <div id="imageList"></div>
+            <!-- 登録済み画像リスト -->
+            <h3>登録済み画像</h3>
+            <div id="imageListContainer">
+                <div id="imageList"></div>
+            </div>
+
+            <br>
+            <button onclick="closeSettings()">閉じる</button>
         </div>
     </div>
-</div>
 
-<script src="script.js"></script> <!-- 外部JSをリンク -->
+    <script src="script.js"></script>
 </body>
 </html>
