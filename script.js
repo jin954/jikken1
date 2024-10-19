@@ -78,22 +78,32 @@ function saveSettings() {
         displayTime = (hours * 60 + minutes) * 60 * 1000; // ミリ秒に変換
         localStorage.setItem("displayTime", (hours * 60 + minutes)); 
         resetTimer(); // タイマーをリセットして再スタート
+
+        // タイマー用の保存ボタンを「設定済み」に変更
+        const saveButton = document.getElementById("saveTimer");
+        saveButton.textContent = "設定済み";
+        saveButton.disabled = true;
+
+        // タイマー用のリセットボタンを表示
+        const resetButton = document.getElementById("resetTimer");
+        resetButton.style.display = "inline";
+
     } else if (selectedMode === 'alarm') {
         // アラームの時刻を取得
         alarmTime = document.getElementById("alarmTime").value;
         localStorage.setItem("alarmTime", alarmTime); // アラーム時刻を保存
         alert(`毎日 ${alarmTime} に画像が切り替わります`);
         startAlarmCheck(); // アラームチェックを開始
+
+        // アラーム用の保存ボタンを「設定済み」に変更
+        const saveButton = document.getElementById("saveAlarm");
+        saveButton.textContent = "設定済み";
+        saveButton.disabled = true;
+
+        // アラーム用のリセットボタンを表示
+        const resetButton = document.getElementById("resetAlarm");
+        resetButton.style.display = "inline";
     }
-
-    // 「保存」ボタンを「設定済み」に変更
-    const saveButton = document.getElementById("saveButton");
-    saveButton.textContent = "設定済み";
-    saveButton.disabled = true;
-
-    // 「リセット」ボタンを表示
-    const resetButton = document.getElementById("resetButton");
-    resetButton.style.display = "inline";
 }
 
 // アラームチェック関数
