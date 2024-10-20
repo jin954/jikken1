@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>画像スライダーウィジェット</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .file-upload-container {
+            display: flex; /* Flexboxを使用 */
+            align-items: center; /* 縦方向の中央揃え */
+            justify-content: flex-start; /* 左寄せ */
+            margin-bottom: 20px; /* 下の余白 */
+        }
+
+        .file-upload-container button {
+            margin-left: 10px; /* ボタンとラベルの間にスペース */
+        }
+    </style>
 </head>
 <body>
     <div class="image-container" id="imageContainer">
@@ -32,8 +44,8 @@
             <br>
 
             <!-- 画像アップロードセクション -->
-            <label for="uploadImage">画像 :</label>
             <div class="file-upload-container">
+                <label for="uploadImage">画像 :</label>
                 <input type="file" id="uploadImage" accept="image/*" multiple style="display:none;" onchange="autoSaveImages()">
                 <button type="button" onclick="document.getElementById('uploadImage').click()">ファイルを選択</button>
             </div>
@@ -51,40 +63,10 @@
         </div>
     </div>
 
+    <script src="script.js"></script>
     <script>
-        let currentIndex = 0;
         let images = JSON.parse(localStorage.getItem("images")) || [];
 
-        // 設定画面を開く
-        function openSettings() {
-            document.getElementById("settingsModal").style.display = "block";
-        }
-
-        // 設定画面を閉じる
-        function closeSettings() {
-            document.getElementById("settingsModal").style.display = "none";
-        }
-
-        // アラーム設定を保存
-        function saveSettings() {
-            const alarmTime = document.getElementById("alarmTime").value;
-            localStorage.setItem("alarmTime", alarmTime);
-            document.getElementById("saveAlarm").textContent = "設定済み";
-            document.getElementById("saveAlarm").disabled = true;
-            document.getElementById("resetAlarm").style.display = "inline";
-            document.getElementById("alarmTime").disabled = true; // アラーム設定後に時間入力を無効化
-        }
-
-        // アラーム設定をリセット
-        function resetSettings() {
-            localStorage.removeItem("alarmTime");
-            document.getElementById("saveAlarm").textContent = "保存";
-            document.getElementById("saveAlarm").disabled = false;
-            document.getElementById("resetAlarm").style.display = "none";
-            document.getElementById("alarmTime").disabled = false; // リセット後に時間入力を有効化
-        }
-
-        // 画像の登録
         function autoSaveImages() {
             const input = document.getElementById('uploadImage');
             const files = input.files;
@@ -98,44 +80,81 @@
                     };
                     reader.readAsDataURL(file);
                 }
-                input.value = ''; // ファイル選択をクリア
+                // ファイル選択後にファイル入力をクリア
+                input.value = '';
             }
         }
 
-        // 画像リストを更新
         function registerImage(imageUrl) {
             images.push({ url: imageUrl });
             localStorage.setItem("images", JSON.stringify(images));
             updateImageList();
         }
 
-        // 画像リストの表示
         function updateImageList() {
             const imageList = document.getElementById('imageList');
-            imageList.innerHTML = ''; // リストをクリア
+            imageList.innerHTML = ""; // 既存のリストをクリア
             images.forEach((image, index) => {
-                const img = document.createElement('img');
+                const imageItem = document.createElement("div");
+                imageItem.classList.add("image-item");
+                
+                const img = document.createElement("img");
                 img.src = image.url;
-                img.width = 50;
+                img.width = 50; // サムネイルサイズ
                 img.height = 50;
-                imageList.appendChild(img);
+                imageItem.appendChild(img);
+
+                const buttonContainer = document.createElement("div");
+                buttonContainer.classList.add("image-item-buttons");
+
+                const upButton = document.createElement("button");
+                upButton.textContent = "↑";
+                upButton.onclick = () => moveImageUp(index);
+                buttonContainer.appendChild(upButton);
+
+                const downButton = document.createElement("button");
+                downButton.textContent = "↓";
+                downButton.onclick = () => moveImageDown(index);
+                buttonContainer.appendChild(downButton);
+
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "削除";
+                deleteButton.onclick = () => deleteImage(index);
+                buttonContainer.appendChild(deleteButton);
+
+                imageItem.appendChild(buttonContainer);
+                imageList.appendChild(imageItem); // 画像項目をリストに追加
             });
         }
 
-        // ページをロードしたときの処理
-        window.onload = function () {
-            currentIndex = parseInt(localStorage.getItem("currentIndex")) || 0;
-            const savedAlarmTime = localStorage.getItem("alarmTime");
-            const alarmInput = document.getElementById("alarmTime");
-
-            if (savedAlarmTime) {
-                alarmInput.value = savedAlarmTime;
-                alarmInput.disabled = true; // アラームが設定済みなら無効化
-                document.getElementById("saveAlarm").textContent = "設定済み";
-                document.getElementById("saveAlarm").disabled = true;
-                document.getElementById("resetAlarm").style.display = "inline";
+        function moveImageUp(index) {
+            if (index > 0) {
+                const temp = images[index];
+                images[index] = images[index - 1];
+                images[index - 1] = temp;
+                localStorage.setItem("images", JSON.stringify(images));
+                updateImageList();
             }
+        }
 
+        function moveImageDown(index) {
+            if (index < images.length - 1) {
+                const temp = images[index];
+                images[index] = images[index + 1];
+                images[index + 1] = temp;
+                localStorage.setItem("images", JSON.stringify(images));
+                updateImageList();
+            }
+        }
+
+        function deleteImage(index) {
+            images.splice(index, 1);
+            localStorage.setItem("images", JSON.stringify(images));
+            updateImageList();
+        }
+
+        // 初期化処理
+        window.onload = function () {
             updateImageList(); // 画像リストの初期表示
         };
     </script>
