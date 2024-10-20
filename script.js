@@ -205,25 +205,106 @@ window.onload = function () {
     const savedDisplayTime = localStorage.getItem("displayTime");
     if (savedDisplayTime) {
         displayTime = savedDisplayTime * 60 * 1000;
-        startTimer();
         document.getElementById("saveTimer").textContent = "設定済み";
         document.getElementById("saveTimer").disabled = true;
         document.getElementById("resetTimer").style.display = "inline";
         
-        // タイマーの時間入力欄を更新する
         const hours = Math.floor(savedDisplayTime / 60);
         const minutes = savedDisplayTime % 60;
         document.getElementById("timerTime").value = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+        
+        if (selectedMode === 'timer') {
+            startTimer();
+        }
     }
 
     const savedAlarmTime = localStorage.getItem("alarmTime");
     if (savedAlarmTime) {
         alarmTime = savedAlarmTime;
+        document.getElementById("alarmTime").value = alarmTime;
+        document.getElementById("saveAlarm").textContent = "設定済み";
+        document.getElementById("saveAlarm").disabled = true;
+        document.getElementById("resetAlarm").style.display = "inline";
+        
+        if (selectedMode === 'alarm') {
+            startAlarmCheck();
+        }
+    }
+
+    updateImageList();
+    updateModeButtons(); // 初期モード設定に基づくボタンの色を更新
+};
+
+function selectMode(mode) {
+    selectedMode = mode;
+    updateModeButtons();
+
+    if (mode === 'timer') {
+        document.querySelector('.timer-settings').style.display = 'block';
+        document.querySelector('.alarm-settings').style.display = 'none';
+        clearTimeout(alarmCheckInterval);
+        startTimer();
+    } else {
+        document.querySelector('.timer-settings').style.display = 'none';
+        document.querySelector('.alarm-settings').style.display = 'block';
+        clearTimeout(timer);
         startAlarmCheck();
+    }
+}
+
+function updateModeButtons() {
+    const timerButton = document.getElementById("timerButton");
+    const alarmButton = document.getElementById("alarmButton");
+    
+    if (selectedMode === 'timer') {
+        timerButton.style.backgroundColor = "blue";
+        alarmButton.style.backgroundColor = "gray";
+    } else {
+        timerButton.style.backgroundColor = "gray";
+        alarmButton.style.backgroundColor = "blue";
+    }
+}
+
+function saveSettings() {
+    if (selectedMode === 'timer') {
+        const timerTime = document.getElementById("timerTime").value;
+        const [hours, minutes] = timerTime.split(":").map(Number);
+        displayTime = (hours * 60 + minutes) * 60 * 1000;
+        localStorage.setItem("displayTime", (hours * 60 + minutes));
+        resetTimer();
+
+        document.getElementById("saveTimer").textContent = "設定済み";
+        document.getElementById("saveTimer").disabled = true;
+        document.getElementById("resetTimer").style.display = "inline";
+
+    } else if (selectedMode === 'alarm') {
+        alarmTime = document.getElementById("alarmTime").value;
+        localStorage.setItem("alarmTime", alarmTime);
+        startAlarmCheck();
+
         document.getElementById("saveAlarm").textContent = "設定済み";
         document.getElementById("saveAlarm").disabled = true;
         document.getElementById("resetAlarm").style.display = "inline";
     }
+}
 
-    updateImageList();
-};
+function resetSettings() {
+    if (selectedMode === 'timer') {
+        localStorage.removeItem("displayTime");
+        displayTime = 0;
+        clearTimeout(timer);
+    } else if (selectedMode === 'alarm') {
+        localStorage.removeItem("alarmTime");
+        alarmTime = '';
+        clearTimeout(alarmCheckInterval);
+    }
+
+    loadImage(currentIndex);
+
+    const saveButton = selectedMode === 'timer' ? document.getElementById("saveTimer") : document.getElementById("saveAlarm");
+    saveButton.textContent = "保存";
+    saveButton.disabled = false;
+
+    const resetButton = selectedMode === 'timer' ? document.getElementById("resetTimer") : document.getElementById("resetAlarm");
+    resetButton.style.display = "none";
+}
