@@ -76,7 +76,7 @@ body {
     display: flex;
     justify-content: flex-start; /* 要素を左揃えにする */
     align-items: center;
-    gap: 5px; /* 各要素の間に10pxのスペースを作る */
+    gap: 10px; /* 各要素の間に10pxのスペースを作る */
 }
 
 .image-item {
@@ -97,4 +97,22 @@ body {
 .modal-content h2 {
     text-align: center; /* タイトルを中央揃えにする */
     margin: 20px 0; /* 上下のマージンを追加 */
+}
+
+.file-upload-container {
+    display: flex; /* Flexboxを使用 */
+    align-items: center; /* 縦方向の中央揃え */
+    justify-content: flex-start; /* 左寄せ */
+    margin-bottom: 20px; /* 下の余白 */
+}
+
+.file-upload-container button {
+    width: 120px;
+    margin-left: 10px; /* ボタンとラベルの間にスペース */
+    padding: 1px 3px; /* 内側の余白を調整 */
+    font-size: 13px; /* 文字サイズを調整 */
+    border-radius: 3px; /* 角を丸める */
+    border: 1px solid #000; /* 枠線のスタイルを指定 */
+    background-color: #f0f0f0; /* 背景色を指定 */
+    cursor: pointer; /* マウスカーソルをポインターにする */
 }
