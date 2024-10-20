@@ -1,12 +1,13 @@
 let images = JSON.parse(localStorage.getItem("images")) || [];
 let currentIndex = 0;
-let displayTime = (localStorage.getItem("displayTime") || 0) * 60 * 1000; 
+let displayTime = (localStorage.getItem("displayTime") || 0) * 60 * 1000;
 let timer;
 let selectedMode = 'timer'; // タイマーがデフォルトモード
 let alarmTime = localStorage.getItem("alarmTime") || ''; // アラーム時刻を保持
+let alarmCheckInterval;
 
 // 初期設定の画像
-const defaultImage = "default_image.png"; 
+const defaultImage = "default_image.png";
 
 // 画像をロードする
 function loadImage(index) {
@@ -72,72 +73,61 @@ function selectMode(mode) {
 // 設定を保存
 function saveSettings() {
     if (selectedMode === 'timer') {
-        // タイマーの時刻を取得
         const timerTime = document.getElementById("timerTime").value;
         const [hours, minutes] = timerTime.split(":").map(Number);
-        displayTime = (hours * 60 + minutes) * 60 * 1000; // ミリ秒に変換
-        localStorage.setItem("displayTime", (hours * 60 + minutes)); 
-        resetTimer(); // タイマーをリセットして再スタート
+        displayTime = (hours * 60 + minutes) * 60 * 1000;
+        localStorage.setItem("displayTime", (hours * 60 + minutes));
+        resetTimer();
 
-        // タイマー用の保存ボタンを「設定済み」に変更
-        const saveButton = document.getElementById("saveTimer");
-        saveButton.textContent = "設定済み";
-        saveButton.disabled = true;
-
-        // タイマー用のリセットボタンを表示
-        const resetButton = document.getElementById("resetTimer");
-        resetButton.style.display = "inline";
+        document.getElementById("saveTimer").textContent = "設定済み";
+        document.getElementById("saveTimer").disabled = true;
+        document.getElementById("resetTimer").style.display = "inline";
 
     } else if (selectedMode === 'alarm') {
-        // アラームの時刻を取得
         alarmTime = document.getElementById("alarmTime").value;
-        localStorage.setItem("alarmTime", alarmTime); // アラーム時刻を保存
-        alert(毎日 ${alarmTime} に画像が切り替わります);
-        startAlarmCheck(); // アラームチェックを開始
+        localStorage.setItem("alarmTime", alarmTime);
+        alert(`毎日 ${alarmTime} に画像が切り替わります`);
+        startAlarmCheck();
 
-        // アラーム用の保存ボタンを「設定済み」に変更
-        const saveButton = document.getElementById("saveAlarm");
-        saveButton.textContent = "設定済み";
-        saveButton.disabled = true;
-
-        // アラーム用のリセットボタンを表示
-        const resetButton = document.getElementById("resetAlarm");
-        resetButton.style.display = "inline";
+        document.getElementById("saveAlarm").textContent = "設定済み";
+        document.getElementById("saveAlarm").disabled = true;
+        document.getElementById("resetAlarm").style.display = "inline";
     }
 }
 
 // アラームチェック関数
 function startAlarmCheck() {
-    const now = new Date();
-    const currentHours = now.getHours();
-    const currentMinutes = now.getMinutes();
-    
-    const [alarmHours, alarmMinutes] = alarmTime.split(":").map(Number);
+    clearTimeout(alarmCheckInterval); // 既存のチェックをクリア
+    if (!alarmTime) return; // アラームが設定されていない場合は何もしない
 
-    if (currentHours === alarmHours && currentMinutes === alarmMinutes) {
-        nextImage(); // アラーム時刻に画像を次に切り替える
-    }
-
-    setTimeout(startAlarmCheck, 60000); // 1分おきに再チェック
+    alarmCheckInterval = setInterval(() => {
+        const now = new Date();
+        const [alarmHours, alarmMinutes] = alarmTime.split(":").map(Number);
+        if (now.getHours() === alarmHours && now.getMinutes() === alarmMinutes) {
+            nextImage(); // アラーム時刻に画像を次に切り替える
+        }
+    }, 60000); // 1分おきにチェック
 }
 
 // 設定をリセット
 function resetSettings() {
-    localStorage.removeItem("displayTime");
-    localStorage.removeItem("alarmTime");
-    displayTime = 0;
-    alarmTime = '';
+    if (selectedMode === 'timer') {
+        localStorage.removeItem("displayTime");
+        displayTime = 0;
+    } else if (selectedMode === 'alarm') {
+        localStorage.removeItem("alarmTime");
+        alarmTime = '';
+        clearTimeout(alarmCheckInterval);
+    }
 
-    clearTimeout(timer); // タイマーを停止
-    loadImage(currentIndex); // 初期画像を再表示
+    clearTimeout(timer);
+    loadImage(currentIndex);
 
-    // 「設定済み」を「保存」に戻す
-    const saveButton = document.getElementById("saveButton");
+    const saveButton = selectedMode === 'timer' ? document.getElementById("saveTimer") : document.getElementById("saveAlarm");
     saveButton.textContent = "保存";
     saveButton.disabled = false;
 
-    // 「リセット」ボタンを非表示に
-    const resetButton = document.getElementById("resetButton");
+    const resetButton = selectedMode === 'timer' ? document.getElementById("resetTimer") : document.getElementById("resetAlarm");
     resetButton.style.display = "none";
 }
 
@@ -226,17 +216,18 @@ function deleteImage(index) {
 // ページロード時に最初の画像を表示
 window.onload = function () {
     loadImage(currentIndex);
-    startTimer(); // タイマーの初期化
-    startAlarmCheck(); // アラームのチェックも開始
 
-    // 設定があれば「保存」を「設定済み」に変更
-    const saveButton = document.getElementById("saveButton");
-    if (localStorage.getItem("displayTime") || localStorage.getItem("alarmTime")) {
-        saveButton.textContent = "設定済み";
-        saveButton.disabled = true;
-
-        // 「リセット」ボタンを表示
-        const resetButton = document.getElementById("resetButton");
-        resetButton.style.display = "inline";
+    const savedDisplayTime = localStorage.getItem("displayTime");
+    if (savedDisplayTime) {
+        displayTime = savedDisplayTime * 60 * 1000;
+        startTimer();
     }
+
+    const savedAlarmTime = localStorage.getItem("alarmTime");
+    if (savedAlarmTime) {
+        alarmTime = savedAlarmTime;
+        startAlarmCheck();
+    }
+
+    updateImageList();
 };
