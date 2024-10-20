@@ -8,12 +8,12 @@
     <style>
         .file-upload-container {
             display: flex;
-            justify-content: space-between; /* ボタンを左右に配置 */
-            align-items: center; /* ボタンを中央揃え */
+            justify-content: space-between;
+            align-items: center;
         }
         
         .file-upload-container button {
-            margin-right: 10px; /* ボタン間のスペース */
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -46,8 +46,7 @@
             <label for="uploadImage">画像 :</label>
             <div class="file-upload-container">
                 <button type="button" onclick="document.getElementById('uploadImage').click()">ファイルを選択</button>
-                <input type="file" id="uploadImage" accept="image/*" multiple style="display:none;" onchange="showFileName()">
-                <button onclick="saveImages()">保存</button>
+                <input type="file" id="uploadImage" accept="image/*" multiple style="display:none;" onchange="autoSaveImages()">
             </div>
 
             <br><br>
@@ -64,5 +63,31 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+        function autoSaveImages() {
+            const input = document.getElementById('uploadImage');
+            const files = input.files;
+
+            if (files.length > 0) {
+                for (const file of files) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const imageUrl = event.target.result;
+                        registerImage(imageUrl);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+
+        function registerImage(imageUrl) {
+            const imageList = document.getElementById('imageList');
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            img.width = 50; 
+            img.height = 50;
+            imageList.appendChild(img);
+        }
+    </script>
 </body>
 </html>
