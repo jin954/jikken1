@@ -92,7 +92,7 @@ function saveSettings() {
         // アラームの時刻を取得
         alarmTime = document.getElementById("alarmTime").value;
         localStorage.setItem("alarmTime", alarmTime); // アラーム時刻を保存
-        alert(`毎日 ${alarmTime} に画像が切り替わります`);
+        alert(毎日 ${alarmTime} に画像が切り替わります);
         startAlarmCheck(); // アラームチェックを開始
 
         // アラーム用の保存ボタンを「設定済み」に変更
@@ -225,15 +225,7 @@ function deleteImage(index) {
 
 // ページロード時に最初の画像を表示
 window.onload = function () {
-    // 設定があればその画像を表示
-    if (localStorage.getItem("displayTime")) {
-        loadImage(currentIndex);
-    } else {
-        // 設定がなければ初期画像を表示
-        loadImage(0);
-    }
-
-    // タイマーとアラームの初期化
+    loadImage(currentIndex);
     startTimer(); // タイマーの初期化
     startAlarmCheck(); // アラームのチェックも開始
 
@@ -243,4 +235,8 @@ window.onload = function () {
         saveButton.textContent = "設定済み";
         saveButton.disabled = true;
 
-       
+        // 「リセット」ボタンを表示
+        const resetButton = document.getElementById("resetButton");
+        resetButton.style.display = "inline";
+    }
+};
