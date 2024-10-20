@@ -25,18 +25,20 @@
             <div class="alarm-settings">
                 <label>時間 : </label>
                 <input type="time" id="alarmTime" class="input-time" value="00:00">
-                <button id="saveAlarm" onclick="saveSettings()">保存</button> <!-- 保存ボタン -->
-                <button id="resetAlarm" style="display:none;" onclick="resetSettings()">リセット</button> <!-- リセットボタン -->
+                <button id="saveAlarm" onclick="saveSettings()">保存</button>
+                <button id="resetAlarm" style="display:none;" onclick="resetSettings()">リセット</button>
             </div>
 
             <br>
 
             <!-- 画像アップロードセクション -->
             <label for="uploadImage">画像 :</label>
-            <input type="file" id="uploadImage" accept="image/*" multiple>
+            <button type="button" onclick="document.getElementById('uploadImage').click()">ファイルを選択</button>
+            <span id="fileName">ファイルは選択されていません</span>
+            <input type="file" id="uploadImage" accept="image/*" multiple style="display:none;" onchange="showFileName()">
             <button onclick="saveImages()">保存</button>
             
-            <br><br> <!-- 追加されたスペース -->
+            <br><br>
 
             <!-- 登録済み画像リスト -->
             <h3>登録済み画像</h3>
@@ -50,5 +52,17 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+        function showFileName() {
+            const fileInput = document.getElementById('uploadImage');
+            const fileNameDisplay = document.getElementById('fileName');
+            const files = fileInput.files;
+            if (files.length > 0) {
+                fileNameDisplay.textContent = files.length === 1 ? files[0].name : `${files.length} 個のファイルが選択されました`;
+            } else {
+                fileNameDisplay.textContent = "ファイルは選択されていません";
+            }
+        }
+    </script>
 </body>
 </html>
