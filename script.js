@@ -88,7 +88,7 @@ function autoSaveImages() {
                 // ローカルストレージに保存
                 localStorage.setItem("images", JSON.stringify(images));
                 // 画像リストを更新
-                updateImageList();
+                updateImageList(); // ここでリストを更新する
             };
             reader.readAsDataURL(file); // 画像ファイルを読み込む
         }
@@ -100,14 +100,14 @@ function autoSaveImages() {
 
 function updateImageList() {
     const imageList = document.getElementById("imageList");
-    imageList.innerHTML = "";
+    imageList.innerHTML = ""; // 既存のリストをクリア
     images.forEach((image, index) => {
         const imageItem = document.createElement("div");
         imageItem.classList.add("image-item");
         
         const img = document.createElement("img");
         img.src = image.url;
-        img.width = 50;
+        img.width = 50; // サムネイルサイズ
         img.height = 50;
         imageItem.appendChild(img);
 
@@ -130,7 +130,7 @@ function updateImageList() {
         buttonContainer.appendChild(deleteButton);
 
         imageItem.appendChild(buttonContainer);
-        imageList.appendChild(imageItem);
+        imageList.appendChild(imageItem); // 画像項目をリストに追加
     });
 }
 
@@ -174,8 +174,8 @@ window.onload = function () {
         document.getElementById("resetAlarm").style.display = "inline";
     }
 
-    updateImageList();
-    
+    updateImageList(); // 画像リストの初期表示
+
     // 画像ファイルが選択されたときに自動的に保存する
     document.getElementById('uploadImage').addEventListener('change', autoSaveImages);
 };
