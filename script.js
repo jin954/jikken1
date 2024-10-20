@@ -73,17 +73,20 @@ function resetSettings() {
     resetButton.style.display = "none";
 }
 
-function saveImages() {
-    const uploadInput = document.getElementById("uploadImage");
-    if (uploadInput.files.length > 0) {
-        for (const file of uploadInput.files) {
+// 自動的に画像を保存する関数
+function autoSaveImages() {
+    const input = document.getElementById('uploadImage');
+    const files = input.files;
+
+    if (files.length > 0) {
+        for (const file of files) {
             const reader = new FileReader();
             reader.onload = function (e) {
                 images.push({ url: e.target.result });
                 localStorage.setItem("images", JSON.stringify(images));
-                updateImageList();
+                updateImageList(); // ここでリストを更新
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(file); // 画像ファイルを読み込む
         }
     }
 }
@@ -150,6 +153,7 @@ function deleteImage(index) {
     updateImageList();
 }
 
+// window.onload で初期化
 window.onload = function () {
     currentIndex = parseInt(localStorage.getItem("currentIndex")) || 0;
     loadImage(currentIndex);
@@ -164,4 +168,7 @@ window.onload = function () {
     }
 
     updateImageList();
+    
+    // 画像ファイルが選択されたときに自動的に保存する
+    document.getElementById('uploadImage').addEventListener('change', autoSaveImages);
 };
