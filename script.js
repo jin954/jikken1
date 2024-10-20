@@ -38,12 +38,17 @@ function closeSettings() {
 function saveSettings() {
     alarmTime = document.getElementById("alarmTime").value;
     localStorage.setItem("alarmTime", alarmTime);
-    alert(`毎日 ${alarmTime} に画像が切り替わります`);
     startAlarmCheck();
 
+    // 保存ボタンの設定変更
     document.getElementById("saveAlarm").textContent = "設定済み";
     document.getElementById("saveAlarm").disabled = true;
+
+    // リセットボタンを表示
     document.getElementById("resetAlarm").style.display = "inline";
+
+    // 時間入力を無効化
+    document.getElementById("alarmTime").disabled = true;
 }
 
 function startAlarmCheck() {
@@ -63,14 +68,19 @@ function resetSettings() {
     localStorage.removeItem("alarmTime");
     alarmTime = '';
     clearTimeout(alarmCheckInterval);
+
+    // 保存ボタンを元に戻す
+    document.getElementById("saveAlarm").textContent = "保存";
+    document.getElementById("saveAlarm").disabled = false;
+
+    // リセットボタンを非表示
+    document.getElementById("resetAlarm").style.display = "none";
+
+    // 時間入力を有効化
+    document.getElementById("alarmTime").disabled = false;
+
+    // デフォルトの画像を読み込む
     loadImage(currentIndex);
-
-    const saveButton = document.getElementById("saveAlarm");
-    saveButton.textContent = "保存";
-    saveButton.disabled = false;
-
-    const resetButton = document.getElementById("resetAlarm");
-    resetButton.style.display = "none";
 }
 
 // 自動的に画像を保存する関数
