@@ -10,7 +10,7 @@ body {
     border: 2px solid black;
     width: 800px;
     height: 600px;
-    margin: 20px auto;
+    margin: 10px auto;
     position: relative;
     background-color: white;
     overflow: hidden;
@@ -24,7 +24,7 @@ body {
 
 .control-buttons {
     text-align: center;
-    margin-top: 40px;
+    margin-top: 50px;
 }
 
 .triangle-button {
@@ -32,8 +32,8 @@ body {
     font-size: 50px;
     margin: 0 5px;
     padding: 5px 10px;
-    width: 45px;
-    height: 45px;
+    width: 30px;
+    height: 30px;
 }
 
 .modal {
