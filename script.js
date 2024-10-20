@@ -176,23 +176,13 @@ window.onload = function () {
     loadImage(currentIndex);
 
     const savedAlarmTime = localStorage.getItem("alarmTime");
-    const alarmInput = document.getElementById("alarmTime"); // 時間入力フィールドの参照を取得
-
     if (savedAlarmTime) {
         alarmTime = savedAlarmTime;
         startAlarmCheck();
         document.getElementById("saveAlarm").textContent = "設定済み";
         document.getElementById("saveAlarm").disabled = true;
         document.getElementById("resetAlarm").style.display = "inline";
-        alarmInput.disabled = true; // 時間入力フィールドを無効化
     }
-
-    updateImageList(); // 画像リストの初期表示
-
-    // 画像ファイルが選択されたときに自動的に保存する
-    document.getElementById('uploadImage').addEventListener('change', autoSaveImages);
-};
-
 
     updateImageList(); // 画像リストの初期表示
 
