@@ -209,6 +209,11 @@ window.onload = function () {
         document.getElementById("saveTimer").textContent = "設定済み";
         document.getElementById("saveTimer").disabled = true;
         document.getElementById("resetTimer").style.display = "inline";
+        
+        // タイマーの時間入力欄を更新する
+        const hours = Math.floor(savedDisplayTime / 60);
+        const minutes = savedDisplayTime % 60;
+        document.getElementById("timerTime").value = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
     }
 
     const savedAlarmTime = localStorage.getItem("alarmTime");
