@@ -225,7 +225,15 @@ function deleteImage(index) {
 
 // ページロード時に最初の画像を表示
 window.onload = function () {
-    loadImage(currentIndex);
+    // 設定があればその画像を表示
+    if (localStorage.getItem("displayTime")) {
+        loadImage(currentIndex);
+    } else {
+        // 設定がなければ初期画像を表示
+        loadImage(0);
+    }
+
+    // タイマーとアラームの初期化
     startTimer(); // タイマーの初期化
     startAlarmCheck(); // アラームのチェックも開始
 
@@ -235,8 +243,4 @@ window.onload = function () {
         saveButton.textContent = "設定済み";
         saveButton.disabled = true;
 
-        // 「リセット」ボタンを表示
-        const resetButton = document.getElementById("resetButton");
-        resetButton.style.display = "inline";
-    }
-};
+       
