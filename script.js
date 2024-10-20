@@ -79,15 +79,22 @@ function autoSaveImages() {
     const files = input.files;
 
     if (files.length > 0) {
+        // 画像選択時の処理をここで行う
         for (const file of files) {
             const reader = new FileReader();
             reader.onload = function (e) {
+                // 画像を配列に追加
                 images.push({ url: e.target.result });
+                // ローカルストレージに保存
                 localStorage.setItem("images", JSON.stringify(images));
-                updateImageList(); // ここでリストを更新
+                // 画像リストを更新
+                updateImageList();
             };
             reader.readAsDataURL(file); // 画像ファイルを読み込む
         }
+
+        // ファイル選択後、ファイル入力をクリア
+        input.value = ''; // これでファイル選択の表示をクリア
     }
 }
 
