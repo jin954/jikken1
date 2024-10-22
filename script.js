@@ -29,6 +29,10 @@ function prevImage() {
 function openSettings() {
     document.getElementById("settingsModal").style.display = "block";
     updateImageList();
+    // スクロールを最初から有効にする
+    const imageList = document.getElementById("imageList");
+    imageList.style.maxHeight = "200px"; // 適切な高さに設定
+    imageList.style.overflowY = "auto"; // スクロールを有効にする
 }
 
 
@@ -84,7 +88,6 @@ function resetSettings() {
     loadImage(currentIndex);
 }
 
-// 自動的に画像を保存する関数
 function autoSaveImages() {
     const input = document.getElementById('uploadImage');
     const files = input.files;
@@ -93,27 +96,33 @@ function autoSaveImages() {
         for (const file of files) {
             const reader = new FileReader();
             reader.onload = function (e) {
+                // 画像をimages配列に追加
                 images.push({ url: e.target.result });
+                // images配列をlocalStorageに保存
                 localStorage.setItem("images", JSON.stringify(images));
+                // 画像リストを更新してスクロールもリセット
                 updateImageList();
             };
             reader.readAsDataURL(file);
         }
 
+        // ファイル選択後にinputをクリア
         input.value = '';
     }
 }
 
+
 function updateImageList() {
-    const imageList = document.getElementById("imageList");
-    imageList.innerHTML = "";
+    const imageList = document.getElementById('imageList');
+    imageList.innerHTML = ""; // 既存のリストをクリア
+
     images.forEach((image, index) => {
         const imageItem = document.createElement("div");
         imageItem.classList.add("image-item");
-        
+
         const img = document.createElement("img");
         img.src = image.url;
-        img.width = 50;
+        img.width = 50; // サムネイルサイズ
         img.height = 50;
         imageItem.appendChild(img);
 
@@ -136,8 +145,11 @@ function updateImageList() {
         buttonContainer.appendChild(deleteButton);
 
         imageItem.appendChild(buttonContainer);
-        imageList.appendChild(imageItem);
+        imageList.appendChild(imageItem); // 画像項目をリストに追加
     });
+
+    // スクロール位置をリセット
+    imageList.scrollTop = imageList.scrollHeight;
 }
 
 function moveImageUp(index) {
@@ -184,4 +196,39 @@ window.onload = function () {
 
     updateImageList();
     document.getElementById('uploadImage').addEventListener('change', autoSaveImages);
+
+    // ホイールイベントを時間入力に追加
+    document.querySelector('input[type="time"]').addEventListener('wheel', function(event) {
+        event.preventDefault(); // デフォルトのスクロール動作を無効化
+
+        const delta = Math.sign(event.deltaY); // スクロールの方向を取得（上: -1、下: 1）
+        const input = this;
+
+        // 現在の時間を取得して、新しい時間に更新する
+        let [hours, minutes] = input.value.split(':').map(Number);
+
+        // スクロール方向に基づいて時間を増減
+        if (delta > 0) {
+            // 下方向スクロール（時間を進める）
+            minutes += 1;
+            if (minutes >= 60) {
+                minutes = 0;
+                hours = (hours + 1) % 24; // 24時間を超えないように
+            }
+        } else {
+            // 上方向スクロール（時間を戻す）
+            minutes -= 1;
+            if (minutes < 0) {
+                minutes = 59;
+                hours = (hours === 0 ? 23 : hours - 1);
+            }
+        }
+
+        // 時刻を2桁にそろえる
+        const formattedHours = String(hours).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+
+        // 値を即座に更新
+        input.value = `${formattedHours}:${formattedMinutes}`;
+    });
 };
