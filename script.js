@@ -29,7 +29,7 @@ function prevImage() {
 function openSettings() {
     document.getElementById("settingsModal").style.display = "block";
     updateImageList();
-    }
+}
 
 
 function closeSettings() {
