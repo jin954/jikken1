@@ -29,7 +29,12 @@ function prevImage() {
 function openSettings() {
     document.getElementById("settingsModal").style.display = "block";
     updateImageList();
+    // スクロールを最初から有効にする
+    const imageList = document.getElementById("imageList");
+    imageList.style.maxHeight = "200px"; // 適切な高さに設定
+    imageList.style.overflowY = "auto"; // スクロールを有効にする
 }
+
 
 function closeSettings() {
     document.getElementById("settingsModal").style.display = "none";
