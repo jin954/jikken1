@@ -144,6 +144,10 @@ body {
     margin-top: 5px; /* 登録画像リストの上の余白を減らす */
 }
 
+#imageList {
+    overflow: hidden;  /* 子要素はスクロールさせない */
+}
+
 /* <h3>要素の余白を調整 */
 h3 {
     margin: 10px 0; /* タイトルの上下の余白を減らす */
