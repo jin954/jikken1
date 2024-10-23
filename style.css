@@ -146,6 +146,7 @@ body {
 
 #imageList {
     overflow: hidden;  /* 子要素はスクロールさせない */
+    display: block;    /* 子要素が縦に並ぶようにする */
 }
 
 /* <h3>要素の余白を調整 */
