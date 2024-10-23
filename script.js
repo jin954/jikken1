@@ -3,7 +3,7 @@ let currentIndex = parseInt(localStorage.getItem("currentIndex")) || 0;
 let alarmTime = localStorage.getItem("alarmTime") || '';
 let alarmCheckInterval;
 
-const defaultImage = "default_image.png";
+const defaultImage = "default_image.png"; // 初期画像のパス
 
 function loadImage(index) {
     const currentImageElement = document.getElementById("currentImage");
@@ -29,12 +29,7 @@ function prevImage() {
 function openSettings() {
     document.getElementById("settingsModal").style.display = "block";
     updateImageList();
-    // スクロールを最初から有効にする
-    const imageList = document.getElementById("imageList");
-    imageList.style.maxHeight = "200px"; // 適切な高さに設定
-    imageList.style.overflowY = "auto"; // スクロールを有効にする
 }
-
 
 function closeSettings() {
     document.getElementById("settingsModal").style.display = "none";
@@ -45,19 +40,14 @@ function saveSettings() {
     localStorage.setItem("alarmTime", alarmTime);
     startAlarmCheck();
 
-    // 保存ボタンの設定変更
     document.getElementById("saveAlarm").textContent = "設定済み";
     document.getElementById("saveAlarm").disabled = true;
-
-    // リセットボタンを表示
     document.getElementById("resetAlarm").style.display = "inline";
-
-    // 時間入力を無効化
     document.getElementById("alarmTime").disabled = true;
 }
 
 function startAlarmCheck() {
-    clearTimeout(alarmCheckInterval);
+    clearInterval(alarmCheckInterval);
     if (!alarmTime) return;
 
     alarmCheckInterval = setInterval(() => {
@@ -66,26 +56,18 @@ function startAlarmCheck() {
         if (now.getHours() === alarmHours && now.getMinutes() === alarmMinutes) {
             nextImage();
         }
-    }, 60000);
+    }, 60000); // 1分ごとにチェック
 }
 
 function resetSettings() {
     localStorage.removeItem("alarmTime");
     alarmTime = '';
-    clearTimeout(alarmCheckInterval);
+    clearInterval(alarmCheckInterval);
 
-    // 保存ボタンを元に戻す
     document.getElementById("saveAlarm").textContent = "保存";
     document.getElementById("saveAlarm").disabled = false;
-
-    // リセットボタンを非表示
     document.getElementById("resetAlarm").style.display = "none";
-
-    // 時間入力を有効化
     document.getElementById("alarmTime").disabled = false;
-
-    // デフォルトの画像を読み込む
-    loadImage(currentIndex);
 }
 
 function autoSaveImages() {
@@ -93,63 +75,70 @@ function autoSaveImages() {
     const files = input.files;
 
     if (files.length > 0) {
+        let fileCount = files.length;
+        let loadedCount = 0;
+
         for (const file of files) {
             const reader = new FileReader();
-            reader.onload = function (e) {
-                // 画像をimages配列に追加
-                images.push({ url: e.target.result });
-                // images配列をlocalStorageに保存
-                localStorage.setItem("images", JSON.stringify(images));
-                // 画像リストを更新してスクロールもリセット
-                updateImageList();
+            reader.onload = function (event) {
+                const imageUrl = event.target.result;
+                registerImage(imageUrl);
+                loadedCount++;
+
+                // すべての画像が読み込み終わったらリストを更新
+                if (loadedCount === fileCount) {
+                    updateImageList();
+                }
             };
             reader.readAsDataURL(file);
         }
-
-        // ファイル選択後にinputをクリア
-        input.value = '';
+        input.value = ''; // ファイル選択後にファイル入力をクリア
     }
 }
 
+function registerImage(imageUrl) {
+    images.push({ url: imageUrl });
+    localStorage.setItem("images", JSON.stringify(images));
+    updateImageList();
+}
 
 function updateImageList() {
     const imageList = document.getElementById('imageList');
-    imageList.innerHTML = ""; // 既存のリストをクリア
 
+    // 既に表示されているリストを維持し、差分だけを更新する
     images.forEach((image, index) => {
-        const imageItem = document.createElement("div");
-        imageItem.classList.add("image-item");
+        if (!imageList.children[index]) {
+            const imageItem = document.createElement("div");
+            imageItem.classList.add("image-item");
 
-        const img = document.createElement("img");
-        img.src = image.url;
-        img.width = 50; // サムネイルサイズ
-        img.height = 50;
-        imageItem.appendChild(img);
+            const img = document.createElement("img");
+            img.src = image.url;
+            img.width = 50; // サムネイルサイズ
+            img.height = 50;
+            imageItem.appendChild(img);
 
-        const buttonContainer = document.createElement("div");
-        buttonContainer.classList.add("image-item-buttons");
+            const buttonContainer = document.createElement("div");
+            buttonContainer.classList.add("image-item-buttons");
 
-        const upButton = document.createElement("button");
-        upButton.textContent = "↑";
-        upButton.onclick = () => moveImageUp(index);
-        buttonContainer.appendChild(upButton);
+            const upButton = document.createElement("button");
+            upButton.textContent = "↑";
+            upButton.onclick = () => moveImageUp(index);
+            buttonContainer.appendChild(upButton);
 
-        const downButton = document.createElement("button");
-        downButton.textContent = "↓";
-        downButton.onclick = () => moveImageDown(index);
-        buttonContainer.appendChild(downButton);
+            const downButton = document.createElement("button");
+            downButton.textContent = "↓";
+            downButton.onclick = () => moveImageDown(index);
+            buttonContainer.appendChild(downButton);
 
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "削除";
-        deleteButton.onclick = () => deleteImage(index);
-        buttonContainer.appendChild(deleteButton);
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "削除";
+            deleteButton.onclick = () => deleteImage(index);
+            buttonContainer.appendChild(deleteButton);
 
-        imageItem.appendChild(buttonContainer);
-        imageList.appendChild(imageItem); // 画像項目をリストに追加
+            imageItem.appendChild(buttonContainer);
+            imageList.appendChild(imageItem); // 画像項目をリストに追加
+        }
     });
-
-    // スクロール位置をリセット
-    imageList.scrollTop = imageList.scrollHeight;
 }
 
 function moveImageUp(index) {
@@ -178,57 +167,32 @@ function deleteImage(index) {
     updateImageList();
 }
 
-// 初期化処理
-window.onload = function () {
-    currentIndex = parseInt(localStorage.getItem("currentIndex")) || 0;
-    loadImage(currentIndex);
+// 時間入力に対するホイール操作を制御
+const timeInput = document.getElementById("alarmTime");
+timeInput.addEventListener('wheel', function(event) {
+    event.preventDefault();
+    const delta = event.deltaY;
+    let [hours, minutes] = timeInput.value.split(':').map(Number);
 
-    const savedAlarmTime = localStorage.getItem("alarmTime");
-    if (savedAlarmTime) {
-        alarmTime = savedAlarmTime;
-        document.getElementById("alarmTime").value = alarmTime; // アラーム時間を復元
-        startAlarmCheck();
-        document.getElementById("saveAlarm").textContent = "設定済み";
-        document.getElementById("saveAlarm").disabled = true;
-        document.getElementById("resetAlarm").style.display = "inline";
-        document.getElementById("alarmTime").disabled = true; // アラーム設定済みなら入力無効化
+    if (delta > 0) {
+        minutes = (minutes + 1) % 60;
+        hours = minutes === 0 ? (hours + 1) % 24 : hours;
+    } else {
+        minutes = (minutes === 0) ? 59 : minutes - 1;
+        hours = (minutes === 59) ? (hours === 0 ? 23 : hours - 1) : hours;
     }
 
-    updateImageList();
-    document.getElementById('uploadImage').addEventListener('change', autoSaveImages);
+    timeInput.value = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+});
 
-    // ホイールイベントを時間入力に追加
-    document.querySelector('input[type="time"]').addEventListener('wheel', function(event) {
-        event.preventDefault(); // デフォルトのスクロール動作を無効化
+// 初期化処理
+window.onload = function () {
+    loadImage(currentIndex); // 初期の画像表示
+    updateImageList(); // 画像リストの初期表示
 
-        const delta = Math.sign(event.deltaY); // スクロールの方向を取得（上: -1、下: 1）
-        const input = this;
-
-        // 現在の時間を取得して、新しい時間に更新する
-        let [hours, minutes] = input.value.split(':').map(Number);
-
-        // スクロール方向に基づいて時間を増減
-        if (delta > 0) {
-            // 下方向スクロール（時間を進める）
-            minutes += 1;
-            if (minutes >= 60) {
-                minutes = 0;
-                hours = (hours + 1) % 24; // 24時間を超えないように
-            }
-        } else {
-            // 上方向スクロール（時間を戻す）
-            minutes -= 1;
-            if (minutes < 0) {
-                minutes = 59;
-                hours = (hours === 0 ? 23 : hours - 1);
-            }
-        }
-
-        // 時刻を2桁にそろえる
-        const formattedHours = String(hours).padStart(2, '0');
-        const formattedMinutes = String(minutes).padStart(2, '0');
-
-        // 値を即座に更新
-        input.value = `${formattedHours}:${formattedMinutes}`;
-    });
+    if (alarmTime) {
+        document.getElementById("alarmTime").value = alarmTime;
+        saveSettings();
+    }
+    startAlarmCheck();
 };
