@@ -139,7 +139,7 @@ body {
 
 /* 画像リストの余白を減らす */
 #imageListContainer {
-    max-height: 150px;
+    max-height: 220px;
     overflow-y: auto;
     margin-top: 5px; /* 登録画像リストの上の余白を減らす */
 }
