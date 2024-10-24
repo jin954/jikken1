@@ -93,9 +93,12 @@ function autoSaveImages() {
                 registerImage(imageUrl);
                 loadedCount++;
 
-                // すべての画像が読み込み終わったらリストを更新
+                // 部分更新：各画像が読み込まれた後に個別に更新
+                updateImageListPartial(images.length - 1);
+
+                // すべての画像が読み込み終わったら、フル更新を行う
                 if (loadedCount === fileCount) {
-                    updateImageList(); // リアルタイムで反映
+                    updateImageList();
                 }
             };
             reader.readAsDataURL(file);
@@ -107,50 +110,66 @@ function autoSaveImages() {
 function registerImage(imageUrl) {
     images.push({ url: imageUrl });
     localStorage.setItem("images", JSON.stringify(images));
-    updateImageList(); // 画像登録後に即リストを更新
 }
-
 
 function updateImageList() {
     const imageList = document.getElementById('imageList');
-    imageList.innerHTML = ''; // リストをクリア
+    imageList.innerHTML = ''; // リスト全体をクリア
 
     images.forEach((image, index) => {
-        const imageItem = document.createElement("div");
-        imageItem.classList.add("image-item");
-
-        const img = document.createElement("img");
-        img.src = image.url;
-        img.width = 50; // サムネイルサイズ
-        img.height = 50;
-        imageItem.appendChild(img);
-
-        const buttonContainer = document.createElement("div");
-        buttonContainer.classList.add("image-item-buttons");
-
-        const upButton = document.createElement("button");
-        upButton.textContent = "↑";
-        upButton.onclick = () => moveImageUp(index);
-        buttonContainer.appendChild(upButton);
-
-        const downButton = document.createElement("button");
-        downButton.textContent = "↓";
-        downButton.onclick = () => moveImageDown(index);
-        buttonContainer.appendChild(downButton);
-
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "削除";
-        deleteButton.onclick = () => {
-            deleteImage(index);
-            updateImageList(); // 削除後にリストを更新
-        };
-        buttonContainer.appendChild(deleteButton);
-
-        imageItem.appendChild(buttonContainer);
-        imageList.appendChild(imageItem); // 画像項目をリストに追加
+        createImageListItem(imageList, image, index);
     });
 }
 
+function updateImageListPartial(index) {
+    const imageList = document.getElementById('imageList');
+    createImageListItem(imageList, images[index], index);
+}
+
+function createImageListItem(imageList, image, index) {
+    const imageItem = document.createElement("div");
+    imageItem.classList.add("image-item");
+    imageItem.dataset.index = index; // 要素にインデックスを設定
+
+    const img = document.createElement("img");
+    img.src = image.url;
+    img.width = 50; // サムネイルサイズ
+    img.height = 50;
+    imageItem.appendChild(img);
+
+    const buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("image-item-buttons");
+
+    const upButton = document.createElement("button");
+    upButton.textContent = "↑";
+    upButton.onclick = () => moveImageUp(index);
+    buttonContainer.appendChild(upButton);
+
+    const downButton = document.createElement("button");
+    downButton.textContent = "↓";
+    downButton.onclick = () => moveImageDown(index);
+    buttonContainer.appendChild(downButton);
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "削除";
+    deleteButton.onclick = () => {
+        deleteImage(index);
+        updateImageList(); // 削除後にリストを更新
+    };
+    buttonContainer.appendChild(deleteButton);
+
+    imageItem.appendChild(buttonContainer);
+    imageList.appendChild(imageItem); // 画像項目をリストに追加
+}
+
+function deleteImage(index) {
+    images.splice(index, 1);
+    localStorage.setItem("images", JSON.stringify(images));
+    updateImageList(); // 画像リストの更新
+    currentIndex = Math.min(currentIndex, images.length - 1);
+    localStorage.setItem("currentIndex", currentIndex);
+    loadImage(currentIndex); // 現在の画像を更新
+}
 
 function moveImageUp(index) {
     if (index > 0) {
@@ -172,14 +191,6 @@ function moveImageDown(index) {
     }
 }
 
-function deleteImage(index) {
-    images.splice(index, 1);
-    localStorage.setItem("images", JSON.stringify(images));
-    updateImageList(); // 画像リストの更新
-    currentIndex = Math.min(currentIndex, images.length - 1);
-    localStorage.setItem("currentIndex", currentIndex);
-    loadImage(currentIndex); // 現在の画像を更新
-}
 
 // 時間入力に対するホイール操作を制御
 const timeInput = document.getElementById("alarmTime");
