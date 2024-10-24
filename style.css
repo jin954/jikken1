@@ -29,8 +29,8 @@ body {
 
 .circle-button {
     font-size: 50px;
-    width: 70px; /* 横幅を設定 */
-    height: 70px; /* 高さを設定 */
+    width: 100px; /* 横幅を設定 */
+    height: 100px; /* 高さを設定 */
     display: inline-block; /* サイズ調整のためにブロック要素にする */
     line-height: 70px; /* ボタン内のテキストの縦位置を中央に調整 */
     text-align: center; /* ボタン内のテキストの横位置を中央に調整 */
