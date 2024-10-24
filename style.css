@@ -29,11 +29,10 @@ body {
 
 .circle-button {
     cursor: pointer;
-    font-size: 50px; /* ボタン内のアイコンサイズ */
+    font-size: 100px; /* ボタン内のアイコンサイズ */
     margin: 0 5px;
     padding: 5px 10px;
-    /* width と height を削除して、font-sizeに合わせる */
-}
+ }
 
 
 .triangle-button {
