@@ -10,9 +10,10 @@ function loadImage(index) {
     if (images.length > 0) {
         currentImageElement.src = images[index].url;
     } else {
-        currentImageElement.src = defaultImage;
+        currentImageElement.src = ''; // 画像がない場合は白紙（透明）にする
     }
 }
+
 
 function nextImage() {
     currentIndex = (currentIndex + 1) % (images.length || 1);
