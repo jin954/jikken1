@@ -28,14 +28,18 @@ body {
 }
 
 .circle-button {
-    font-size: 50px;
-    width: 100px; /* 横幅を設定 */
-    height: 100px; /* 高さを設定 */
-    display: inline-block; /* サイズ調整のためにブロック要素にする */
-    line-height: 70px; /* ボタン内のテキストの縦位置を中央に調整 */
-    text-align: center; /* ボタン内のテキストの横位置を中央に調整 */
-    border-radius: 50%; /* 丸いボタンにする */
+    font-size: 50px; /* テキスト自体のサイズはこれで指定 */
+    width: 70px; /* ボタンの横幅を指定 */
+    height: 70px; /* ボタンの縦幅を指定 */
+    border-radius: 50%; /* ボタンを丸くする */
+    line-height: 70px; /* テキストを縦中央に配置 */
+    text-align: center; /* テキストを横中央に配置 */
+    display: inline-block; /* ボタンをブロック表示にして中央揃え可能に */
+    padding: 0; /* 余白を完全になくす */
+    margin: 0 10px; /* ボタン間のスペースを調整 */
+    cursor: pointer; /* カーソルの形状を指マークに */
 }
+
 
 .triangle-button {
     cursor: pointer;
