@@ -28,16 +28,17 @@ body {
 }
 
 .circle-button {
-    font-size: 50px; /* 例えば50pxに設定 */ 
+    font-size: 50px;
+    transform: scale(1.5); /* 拡大率を調整 */
 }
 
 .triangle-button {
     cursor: pointer;
-    font-size: 50px; /* ボタン内のアイコンサイズ */
+    font-size: 50px;
     margin: 0 5px;
     padding: 5px 10px;
-    /* width と height を削除して、font-sizeに合わせる */
 }
+
 
 .modal {
     display: none;
