@@ -29,7 +29,7 @@ body {
 
 .circle-button {
     cursor: pointer;
-    font-size: 100px; /* ボタン内のアイコンサイズ */
+    font-size: 80px; /* ボタン内のアイコンサイズ */
     margin: 0 5px;
     padding: 5px 10px;
  }
