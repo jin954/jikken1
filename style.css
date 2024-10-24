@@ -29,7 +29,7 @@ body {
 
 .circle-button {
     font-size: 50px;
-    transform: scale(1.5); /* 拡大率を調整 */
+    transform: scale(2.5); /* 拡大率を調整 */
 }
 
 .triangle-button {
