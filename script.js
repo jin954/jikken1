@@ -83,11 +83,12 @@ async function autoSaveImages() {
             return;
         }
 
+        // 画像を順次登録する
         for (const file of files) {
             await readFileAndRegister(file);
         }
 
-        updateImageList(); // 最後に一度だけリストを更新
+        updateImageList(); // リストを一度だけ更新
         input.value = '';
     }
 }
