@@ -84,22 +84,29 @@ async function autoSaveImages() {
         }
 
         // 画像を順次登録する
-        for (const file of files) {
-            await readFileAndRegister(file);
+        try {
+            for (const file of files) {
+                await readFileAndRegister(file);
+            }
+            updateImageList(); // 一括でリストを更新
+        } catch (error) {
+            console.error("画像の登録中にエラーが発生しました:", error);
         }
 
-        updateImageList(); // リストを一度だけ更新
         input.value = '';
     }
 }
 
 function readFileAndRegister(file) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = function (event) {
             const imageUrl = event.target.result;
             registerImage(imageUrl);
             resolve();
+        };
+        reader.onerror = function () {
+            reject("ファイルの読み取りに失敗しました");
         };
         reader.readAsDataURL(file);
     });
