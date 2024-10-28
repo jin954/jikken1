@@ -2,6 +2,8 @@ let images = JSON.parse(localStorage.getItem("images")) || [];
 let currentIndex = parseInt(localStorage.getItem("currentIndex")) || 0;
 let alarmTime = localStorage.getItem("alarmTime") || '';
 let alarmCheckInterval;
+let imageQueue = []; // 画像登録キュー
+let isProcessingQueue = false; // キュー処理中のフラグ
 
 const defaultImage = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><rect width='500' height='500' fill='white'/></svg>";
 
@@ -83,18 +85,31 @@ async function autoSaveImages() {
             return;
         }
 
-        // 画像を順次登録する
-        try {
-            for (const file of files) {
-                await readFileAndRegister(file);
-            }
-            updateImageList(); // 一括でリストを更新
-        } catch (error) {
-            console.error("画像の登録中にエラーが発生しました:", error);
+        for (const file of files) {
+            imageQueue.push(file);
         }
 
         input.value = '';
+        processImageQueue();
     }
+}
+
+async function processImageQueue() {
+    if (isProcessingQueue || imageQueue.length === 0) return;
+
+    isProcessingQueue = true;
+
+    while (imageQueue.length > 0) {
+        const file = imageQueue.shift();
+        try {
+            await readFileAndRegister(file);
+        } catch (error) {
+            console.error("画像の登録中にエラーが発生しました:", error);
+        }
+    }
+
+    updateImageList();
+    isProcessingQueue = false;
 }
 
 function readFileAndRegister(file) {
