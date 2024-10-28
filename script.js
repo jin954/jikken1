@@ -90,9 +90,19 @@ async function autoSaveImages() {
         }
 
         input.value = '';
-        processImageQueue();
+        debounceProcessImageQueue();
     }
 }
+
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+
+const debounceProcessImageQueue = debounce(processImageQueue, 200);
 
 async function processImageQueue() {
     if (isProcessingQueue || imageQueue.length === 0) return;
@@ -159,7 +169,7 @@ function createImageListItem(imageList, image, index) {
     upButton.textContent = "↑";
     upButton.onclick = () => {
         moveImageUp(index);
-        updateImageList();
+        debounceUpdateImageList();
     };
     buttonContainer.appendChild(upButton);
 
@@ -167,7 +177,7 @@ function createImageListItem(imageList, image, index) {
     downButton.textContent = "↓";
     downButton.onclick = () => {
         moveImageDown(index);
-        updateImageList();
+        debounceUpdateImageList();
     };
     buttonContainer.appendChild(downButton);
 
@@ -175,13 +185,15 @@ function createImageListItem(imageList, image, index) {
     deleteButton.textContent = "削除";
     deleteButton.onclick = () => {
         deleteImage(index);
-        updateImageList();
+        debounceUpdateImageList();
     };
     buttonContainer.appendChild(deleteButton);
 
     imageItem.appendChild(buttonContainer);
     imageList.appendChild(imageItem);
 }
+
+const debounceUpdateImageList = debounce(updateImageList, 200);
 
 function deleteImage(index) {
     if (index < 0 || index >= images.length) return;
@@ -192,7 +204,6 @@ function deleteImage(index) {
     currentIndex = Math.min(currentIndex, images.length - 1);
     localStorage.setItem("currentIndex", currentIndex);
 
-    updateImageList();
     loadImage(currentIndex);
 }
 
@@ -200,7 +211,6 @@ function moveImageUp(index) {
     if (index > 0) {
         [images[index], images[index - 1]] = [images[index - 1], images[index]];
         localStorage.setItem("images", JSON.stringify(images));
-        updateImageList();
     }
 }
 
@@ -208,7 +218,6 @@ function moveImageDown(index) {
     if (index < images.length - 1) {
         [images[index], images[index + 1]] = [images[index + 1], images[index]];
         localStorage.setItem("images", JSON.stringify(images));
-        updateImageList();
     }
 }
 
