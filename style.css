@@ -12,15 +12,20 @@ body {
     height: 500px;
     margin: 20px auto;
     position: relative;
-    background-color: white;
+    background-color: white; /* 白背景を明示的に設定 */
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+    width: 100%; /* コンテナの幅いっぱいに表示 */
+    height: auto; /* 縦横比を維持して自動調整 */
+    object-fit: contain; /* 枠内に収まるように画像を調整 */
+    background-color: white; /* 画像の背景色を白に設定 */
 }
+
 
 .control-buttons {
     display: flex;
