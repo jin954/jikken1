@@ -48,7 +48,9 @@ function loadImage(index) {
     } else {
         currentImageElement.src = defaultImage;
     }
+    currentImageElement.style.backgroundColor = "white"; // 背景色を白に指定
 }
+
 
 
 function nextImage() {
