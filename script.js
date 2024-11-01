@@ -7,7 +7,6 @@ let isProcessingQueue = false; // キュー処理中のフラグ
 
 const defaultImage = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><rect width='500' height='500' fill='white'/></svg>";
 
-// 画像を圧縮して登録
 function compressImage(imageFile) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -31,8 +30,8 @@ function compressImage(imageFile) {
 function readFileAndRegister(file) {
     return new Promise(async (resolve, reject) => {
         try {
-            const compressedImageUrl = await compressImage(file);
-            registerImage(compressedImageUrl);
+            const compressedImageUrl = await compressImage(file); // 圧縮処理を追加
+            registerImage(compressedImageUrl); // 圧縮した画像を登録
             resolve();
         } catch (error) {
             console.error("画像の登録中にエラーが発生しました:", error);
@@ -45,15 +44,10 @@ function loadImage(index) {
     const currentImageElement = document.getElementById("currentImage");
     if (images.length > 0) {
         currentImageElement.src = images[index].url;
-        currentImageElement.style.objectFit = "contain"; // 画像を枠内に収める
-        currentImageElement.style.backgroundColor = "white"; // 背景色を白に設定
     } else {
         currentImageElement.src = defaultImage;
-        currentImageElement.style.objectFit = "contain";
-        currentImageElement.style.backgroundColor = "white";
     }
 }
-
 
 function nextImage() {
     currentIndex = (currentIndex + 1) % (images.length || 1);
@@ -159,6 +153,21 @@ async function processImageQueue() {
 
     updateImageList();
     isProcessingQueue = false;
+}
+
+function readFileAndRegister(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const imageUrl = event.target.result;
+            registerImage(imageUrl);
+            resolve();
+        };
+        reader.onerror = function () {
+            reject("ファイルの読み取りに失敗しました");
+        };
+        reader.readAsDataURL(file);
+    });
 }
 
 function registerImage(imageUrl) {
