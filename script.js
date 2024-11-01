@@ -62,9 +62,15 @@ function prevImage() {
 }
 
 function openSettings() {
-    document.getElementById("settingsModal").style.display = "block";
-    updateImageList();
+    const modal = document.getElementById("settingsModal");
+    if (modal) {
+        modal.style.display = "block";
+        updateImageList();
+    } else {
+        console.error("設定モーダルが見つかりませんでした");
+    }
 }
+
 
 function closeSettings() {
     document.getElementById("settingsModal").style.display = "none";
