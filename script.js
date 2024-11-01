@@ -7,7 +7,6 @@ let isProcessingQueue = false; // キュー処理中のフラグ
 
 const defaultImage = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><rect width='500' height='500' fill='white'/></svg>";
 
-// 画像を圧縮して登録
 function compressImage(imageFile) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -31,8 +30,8 @@ function compressImage(imageFile) {
 function readFileAndRegister(file) {
     return new Promise(async (resolve, reject) => {
         try {
-            const compressedImageUrl = await compressImage(file);
-            registerImage(compressedImageUrl);
+            const compressedImageUrl = await compressImage(file); // 圧縮処理を追加
+            registerImage(compressedImageUrl); // 圧縮した画像を登録
             resolve();
         } catch (error) {
             console.error("画像の登録中にエラーが発生しました:", error);
@@ -48,10 +47,7 @@ function loadImage(index) {
     } else {
         currentImageElement.src = defaultImage;
     }
-    currentImageElement.style.backgroundColor = "white"; // 背景色を白に指定
 }
-
-
 
 function nextImage() {
     currentIndex = (currentIndex + 1) % (images.length || 1);
@@ -117,7 +113,7 @@ async function autoSaveImages() {
     if (files.length > 0) {
         const maxImageCount = 100;
         if (images.length + files.length > maxImageCount) {
-            console.warn(`画像は最大${maxImageCount}枚まで登録できます。`);
+            console.warn(画像は最大${maxImageCount}枚まで登録できます。);
             input.value = '';
             return;
         }
@@ -157,6 +153,21 @@ async function processImageQueue() {
 
     updateImageList();
     isProcessingQueue = false;
+}
+
+function readFileAndRegister(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const imageUrl = event.target.result;
+            registerImage(imageUrl);
+            resolve();
+        };
+        reader.onerror = function () {
+            reject("ファイルの読み取りに失敗しました");
+        };
+        reader.readAsDataURL(file);
+    });
 }
 
 function registerImage(imageUrl) {
@@ -258,7 +269,7 @@ timeInput.addEventListener('wheel', function(event) {
         hours = (minutes === 59) ? (hours === 0 ? 23 : hours - 1) : hours;
     }
 
-    timeInput.value = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+    timeInput.value = ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')};
 });
 
 // 初期化処理
@@ -268,11 +279,6 @@ window.onload = function () {
 
     if (alarmTime) {
         document.getElementById("alarmTime").value = alarmTime;
-        document.getElementById("saveAlarm").textContent = "設定済み";
-        document.getElementById("saveAlarm").disabled = true;
-        document.getElementById("resetAlarm").style.display = "inline";
-        document.getElementById("alarmTime").disabled = true;
+        startAlarmCheck();
     }
-    
-    startAlarmCheck();
 };
