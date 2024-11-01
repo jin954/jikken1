@@ -2,43 +2,8 @@ let images = JSON.parse(localStorage.getItem("images")) || [];
 let currentIndex = parseInt(localStorage.getItem("currentIndex")) || 0;
 let alarmTime = localStorage.getItem("alarmTime") || '';
 let alarmCheckInterval;
-let imageQueue = []; // 画像登録キュー
-let isProcessingQueue = false; // キュー処理中のフラグ
 
-const defaultImage = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><rect width='500' height='500' fill='white'/></svg>";
-
-function compressImage(imageFile) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const img = new Image();
-            img.src = event.target.result;
-            img.onload = function() {
-                const canvas = document.createElement('canvas');
-                canvas.width = 200; // サムネイルの幅
-                canvas.height = 200; // サムネイルの高さ
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                resolve(canvas.toDataURL('image/jpeg', 0.7)); // 圧縮率70%
-            };
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(imageFile);
-    });
-}
-
-function readFileAndRegister(file) {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const compressedImageUrl = await compressImage(file);
-            registerImage(compressedImageUrl);
-            resolve();
-        } catch (error) {
-            console.error("画像の登録中にエラーが発生しました:", error);
-            reject();
-        }
-    });
-}
+const defaultImage = "default_image.png"; // 初期画像のパス
 
 function loadImage(index) {
     const currentImageElement = document.getElementById("currentImage");
@@ -90,9 +55,8 @@ function startAlarmCheck() {
         const [alarmHours, alarmMinutes] = alarmTime.split(":").map(Number);
         if (now.getHours() === alarmHours && now.getMinutes() === alarmMinutes) {
             nextImage();
-            resetSettings();
         }
-    }, 60000);
+    }, 60000); // 1分ごとにチェック
 }
 
 function resetSettings() {
@@ -106,164 +70,143 @@ function resetSettings() {
     document.getElementById("alarmTime").disabled = false;
 }
 
-async function autoSaveImages() {
+function autoSaveImages() {
     const input = document.getElementById('uploadImage');
     const files = input.files;
 
     if (files.length > 0) {
-        const maxImageCount = 100;
-        if (images.length + files.length > maxImageCount) {
-            console.warn(画像は最大${maxImageCount}枚まで登録できます。);
-            input.value = '';
-            return;
-        }
+        let fileCount = files.length;
+        let loadedCount = 0;
 
         for (const file of files) {
-            imageQueue.push(file);
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const imageUrl = event.target.result;
+                registerImage(imageUrl);
+                loadedCount++;
+
+                // すべての画像が読み込み終わったらリストを更新
+                if (loadedCount === fileCount) {
+                    updateImageList();
+                }
+            };
+            reader.readAsDataURL(file);
         }
-
-        input.value = '';
-        debounceProcessImageQueue();
+        input.value = ''; // ファイル選択後にファイル入力をクリア
     }
-}
-
-function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-}
-
-const debounceProcessImageQueue = debounce(processImageQueue, 200);
-
-async function processImageQueue() {
-    if (isProcessingQueue || imageQueue.length === 0) return;
-
-    isProcessingQueue = true;
-
-    while (imageQueue.length > 0) {
-        const file = imageQueue.shift();
-        try {
-            await readFileAndRegister(file);
-        } catch (error) {
-            console.error("画像の登録中にエラーが発生しました:", error);
-        }
-    }
-
-    updateImageList();
-    isProcessingQueue = false;
 }
 
 function registerImage(imageUrl) {
     images.push({ url: imageUrl });
     localStorage.setItem("images", JSON.stringify(images));
+    updateImageList();
 }
 
 function updateImageList() {
     const imageList = document.getElementById('imageList');
-    imageList.innerHTML = '';
-
+    imageList.innerHTML = ""; // 既存のリストをクリア
     images.forEach((image, index) => {
-        createImageListItem(imageList, image, index);
+        const imageItem = document.createElement("div");
+        imageItem.classList.add("image-item");
+
+        const img = document.createElement("img");
+        img.src = image.url;
+        img.width = 50; // サムネイルサイズ
+        img.height = 50;
+        imageItem.appendChild(img);
+
+        const buttonContainer = document.createElement("div");
+        buttonContainer.classList.add("image-item-buttons");
+
+        const upButton = document.createElement("button");
+        upButton.textContent = "↑";
+        upButton.onclick = () => moveImageUp(index);
+        buttonContainer.appendChild(upButton);
+
+        const downButton = document.createElement("button");
+        downButton.textContent = "↓";
+        downButton.onclick = () => moveImageDown(index);
+        buttonContainer.appendChild(downButton);
+
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "削除";
+        deleteButton.onclick = () => deleteImage(index);
+        buttonContainer.appendChild(deleteButton);
+
+        imageItem.appendChild(buttonContainer);
+        imageList.appendChild(imageItem); // 画像項目をリストに追加
     });
-}
-
-function createImageListItem(imageList, image, index) {
-    const imageItem = document.createElement("div");
-    imageItem.classList.add("image-item");
-    imageItem.dataset.index = index;
-
-    const img = document.createElement("img");
-    img.src = image.url;
-    img.width = 50;
-    img.height = 50;
-    imageItem.appendChild(img);
-
-    const buttonContainer = document.createElement("div");
-    buttonContainer.classList.add("image-item-buttons");
-
-    const upButton = document.createElement("button");
-    upButton.textContent = "↑";
-    upButton.onclick = () => {
-        moveImageUp(index);
-        debounceUpdateImageList();
-    };
-    buttonContainer.appendChild(upButton);
-
-    const downButton = document.createElement("button");
-    downButton.textContent = "↓";
-    downButton.onclick = () => {
-        moveImageDown(index);
-        debounceUpdateImageList();
-    };
-    buttonContainer.appendChild(downButton);
-
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "削除";
-    deleteButton.onclick = () => {
-        deleteImage(index);
-        debounceUpdateImageList();
-    };
-    buttonContainer.appendChild(deleteButton);
-
-    imageItem.appendChild(buttonContainer);
-    imageList.appendChild(imageItem);
-}
-
-const debounceUpdateImageList = debounce(updateImageList, 200);
-
-function deleteImage(index) {
-    if (index < 0 || index >= images.length) return;
-
-    images.splice(index, 1);
-    localStorage.setItem("images", JSON.stringify(images));
-
-    currentIndex = Math.min(currentIndex, images.length - 1);
-    localStorage.setItem("currentIndex", currentIndex);
-
-    loadImage(currentIndex);
 }
 
 function moveImageUp(index) {
     if (index > 0) {
-        [images[index], images[index - 1]] = [images[index - 1], images[index]];
+        const temp = images[index];
+        images[index] = images[index - 1];
+        images[index - 1] = temp;
         localStorage.setItem("images", JSON.stringify(images));
+        updateImageList();
     }
 }
 
 function moveImageDown(index) {
     if (index < images.length - 1) {
-        [images[index], images[index + 1]] = [images[index + 1], images[index]];
+        const temp = images[index];
+        images[index] = images[index + 1];
+        images[index + 1] = temp;
         localStorage.setItem("images", JSON.stringify(images));
+        updateImageList();
     }
 }
 
+function deleteImage(index) {
+    images.splice(index, 1);
+    localStorage.setItem("images", JSON.stringify(images));
+    updateImageList();
+}
+
 // 時間入力に対するホイール操作を制御
-const timeInput = document.getElementById("alarmTime");
-timeInput.addEventListener('wheel', function(event) {
-    event.preventDefault();
+document.querySelector('input[type="time"]').addEventListener('wheel', function(event) {
+    event.preventDefault(); // デフォルトのスクロール動作を無効化
+
     const delta = event.deltaY;
-    let [hours, minutes] = timeInput.value.split(':').map(Number);
+    const input = this;
+
+    // 現在の時間を取得して、新しい時間に更新する
+    let [hours, minutes] = input.value.split(':').map(Number);
 
     if (delta > 0) {
-        minutes = (minutes + 1) % 60;
-        hours = minutes === 0 ? (hours + 1) % 24 : hours;
+        // 下方向スクロール（時間を進める）
+        if (minutes === 59) {
+            minutes = 0;
+            hours = (hours + 1) % 24; // 24時間制を超えないように
+        } else {
+            minutes += 1;
+        }
     } else {
-        minutes = (minutes === 0) ? 59 : minutes - 1;
-        hours = (minutes === 59) ? (hours === 0 ? 23 : hours - 1) : hours;
+        // 上方向スクロール（時間を戻す）
+        if (minutes === 0) {
+            minutes = 59;
+            hours = (hours === 0 ? 23 : hours - 1);
+        } else {
+            minutes -= 1;
+        }
     }
 
-    timeInput.value = ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')};
+    // 時刻を2桁にそろえる
+    const formattedHours = String(hours).padStart(2, '0');
+    const formattedMinutes = String(minutes).padStart(2, '0');
+
+    input.value = `${formattedHours}:${formattedMinutes}`;
 });
 
 // 初期化処理
 window.onload = function () {
-    loadImage(currentIndex);
-    updateImageList();
+    loadImage(currentIndex); // 初期の画像表示
+    updateImageList(); // 画像リストの初期表示
 
     if (alarmTime) {
         document.getElementById("alarmTime").value = alarmTime;
-        startAlarmCheck();
+        saveSettings();
     }
+    startAlarmCheck();
 };
