@@ -45,14 +45,11 @@ function loadImage(index) {
     const currentImageElement = document.getElementById("currentImage");
     if (images.length > 0) {
         currentImageElement.src = images[index].url;
-        currentImageElement.style.objectFit = "contain"; // 画像を枠内に収める
-        currentImageElement.style.backgroundColor = "white"; // 背景色を白に設定
     } else {
         currentImageElement.src = defaultImage;
-        currentImageElement.style.objectFit = "contain";
-        currentImageElement.style.backgroundColor = "white";
     }
 }
+
 
 function nextImage() {
     currentIndex = (currentIndex + 1) % (images.length || 1);
