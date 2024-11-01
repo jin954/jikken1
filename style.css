@@ -8,22 +8,24 @@ body {
 
 .image-container {
     border: 2px solid black;
-    width: 700px;
-    height: 500px;
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+    max-height: 500px;
     margin: 20px auto;
     background-color: white;
-    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .image {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: auto;
     object-fit: contain;
-    background-color: white; /* 背景色を白に設定 */
+    background-color: white;
 }
+
 
 
 
