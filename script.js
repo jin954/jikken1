@@ -14,7 +14,7 @@ function compressImage(imageFile) {
             const img = new Image();
             img.onload = function() {
                 const canvas = document.createElement('canvas');
-                const canvasSize = 300; // サムネイルのサイズ
+                const canvasSize = 1000; // サムネイル解像度を1000pxに設定
                 canvas.width = canvasSize;
                 canvas.height = canvasSize;
                 const ctx = canvas.getContext('2d');
@@ -23,7 +23,7 @@ function compressImage(imageFile) {
                 ctx.fillStyle = 'white';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                // 画像のアスペクト比を維持して、キャンバスに収まるように調整
+                // 画像のアスペクト比を維持しつつ、キャンバスに収める
                 const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
                 const scaledWidth = img.width * scale;
                 const scaledHeight = img.height * scale;
@@ -33,8 +33,8 @@ function compressImage(imageFile) {
                 // キャンバスに画像を描画
                 ctx.drawImage(img, 0, 0, img.width, img.height, offsetX, offsetY, scaledWidth, scaledHeight);
 
-                // 圧縮した画像データを取得（品質を80%に設定）
-                resolve(canvas.toDataURL('image/jpeg', 0.8));
+                // PNG形式で画像データを取得（非圧縮）
+                resolve(canvas.toDataURL('image/png'));
             };
 
             img.onerror = function() {
