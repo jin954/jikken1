@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #ffffff;
+    background-color: #ffffff; /* 背景色を白に設定 */
     text-align: center;
     margin: 0;
     padding: 0;
@@ -12,8 +12,9 @@ body {
     height: auto; /* 高さを自動調整 */
     margin: 20px auto;
     position: relative;
-    background-color: #ffffff;
+    background-color: #ffffff; /* 背景色を白に設定 */
     overflow: hidden;
+    border: none; /* 外枠をなくす */
 }
 
 .image {
@@ -57,7 +58,7 @@ body {
     background-color: #fff;
     margin: 10% auto;
     padding: 20px;
-    border: 1px solid #888;
+    border: none; /* 外枠をなくす */
     width: 350px;
     text-align: left;
 }
@@ -125,8 +126,9 @@ body {
 #imageListContainer {
     max-height: 220px;
     overflow-y: auto;
-    border: 1px solid #ccc;
     padding: 10px;
+    background-color: #ffffff; /* 背景色を白に設定 */
+    border: none; /* 外枠をなくす */
 }
 
 #imageList {
