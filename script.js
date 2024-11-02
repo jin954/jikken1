@@ -52,7 +52,6 @@ function compressImage(imageFile) {
     });
 }
 
-
 function readFileAndRegister(file) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -70,11 +69,10 @@ function loadImage(index) {
     const currentImageElement = document.getElementById("currentImage");
     if (images.length > 0) {
         currentImageElement.src = images[index].url;
-        // 画像の表示スタイルを設定
-        currentImageElement.style.width = "100%"; // 親要素に合わせて幅を100%に設定
-        currentImageElement.style.height = "auto"; // 高さは自動調整
-        currentImageElement.style.objectFit = "contain"; // 画像のアスペクト比を維持
-        currentImageElement.style.backgroundColor = "white"; // 背景色を白に設定
+        currentImageElement.style.width = "100%"; 
+        currentImageElement.style.height = "auto";
+        currentImageElement.style.objectFit = "contain";
+        currentImageElement.style.backgroundColor = "white";
     } else {
         currentImageElement.src = defaultImage;
         currentImageElement.style.width = "100%";
