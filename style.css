@@ -7,8 +7,8 @@ body {
 }
 
 .image-container {
-    width: 100%;
-    max-width: 500px; /* 最大幅を設定 */
+    width: 70%;
+    max-width: 400px; /* 最大幅を設定 */
     height: auto; /* 高さを自動調整 */
     margin: 20px auto;
     position: relative;
@@ -29,18 +29,18 @@ body {
     justify-content: center;
     align-items: center;
     margin-top: 15px;
-    gap: 50px; /* ボタン間のスペースを調整 */
+    gap: 30px; /* ボタン間のスペースを調整 */
 }
 
 .triangle-button, .diamond-button {
     cursor: pointer;
-    font-size: 50px; /* ボタンのサイズを統一 */
+    font-size: 35px; /* ボタンのサイズを統一 */
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 60px;
-    height: 60px; /* クリック可能範囲をアイコンと同じサイズに調整 */
+    width: 40px;
+    height: 40px; /* クリック可能範囲をアイコンと同じサイズに調整 */
 }
 
 .modal {
@@ -59,7 +59,7 @@ body {
     margin: 10% auto;
     padding: 20px;
     border: none; /* 外枠をなくす */
-    width: 350px;
+    width: 250px;
     text-align: left;
 }
 
