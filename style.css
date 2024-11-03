@@ -19,7 +19,7 @@ body {
 
 .image {
     width: 100%; /* 親要素の幅に合わせる */
-    height: 100%; /* 親要素の高さに合わせる */
+    height: auto; /* 親要素の高さに合わせる */
     object-fit: contain; /* 画像のアスペクト比を保持しながらリサイズ */
     display: block; /* 画像周囲のスペースを排除 */
 }
