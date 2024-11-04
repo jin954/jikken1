@@ -8,13 +8,13 @@ body {
 
 .image-container {
     width: 70%;
-    max-width: 400px; /* 最大幅を設定 */
-    height: auto; /* 高さを自動調整 */
+    max-width: 400px;
+    padding-bottom: 100%; /* アスペクト比を保つために設定 */
     margin: 20px auto;
     position: relative;
-    background-color: #ffffff; /* 背景色を白に設定 */
+    background-color: #ffffff;
     overflow: hidden;
-    border: none; /* 外枠をなくす */
+    border: none;
 }
 
 .image {
