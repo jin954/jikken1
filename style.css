@@ -9,22 +9,21 @@ body {
 .image-container {
     width: 70%;
     max-width: 400px;
-    padding-bottom: 100%; /* アスペクト比を保つために設定 */
     margin: 20px auto;
     position: relative;
     background-color: #ffffff;
     overflow: hidden;
     border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .image {
     width: 100%;
-    height: 100%; /* 親要素の高さに合わせてリサイズ */
-    object-fit: contain; /* 画像のアスペクト比を保持しながらリサイズ */
+    height: auto; /* アスペクト比を保持して縮小 */
+    object-fit: contain;
     display: block;
-    position: absolute; /* 親要素内での位置を調整 */
-    top: 0;
-    left: 0;
 }
 
 .control-buttons {
